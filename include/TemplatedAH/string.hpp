@@ -7,6 +7,13 @@
 
 namespace tah
 {
+#define TEMPLATEDAH_STRING(name, string)			\
+struct name											\
+{													\
+	static constexpr const char32_t str[] = string;	\
+};
+
+
 	namespace details
 	{
 		template<std::size_t Index_, typename First_, typename... Data_>

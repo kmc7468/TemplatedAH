@@ -73,6 +73,8 @@ namespace tah
 			using storage = typename Storages_::template get<get_jongsung_index<SelectedStorage_>::value>;
 		};
 
+		using create_states = aheui_states<create_storages, cursor<0, 0, 1, direction::down>, 0>;
+
 		template<typename Lines_, typename Cursor_, typename = void>
 		struct move_to_cursor;
 
@@ -332,7 +334,32 @@ namespace tah
 
 			using states_type = typename internal_type_::states_type;
 		};
+
+		template<typename Lines_, typename Input_, typename States_>
+		struct aheui_run
+		{
+			using lines_type = Lines_;
+			using input_type = Input_;
+			using states_type = States_;
+
+			template<typename String_>
+			using input = aheui_run<Lines_, typename add_raw_string<Input_, typename make_raw_string<String_>::type>::type, States_>;
+		};
+		template<typename Lines_, typename States_>
+		struct aheui_run<Lines_, void, States_>
+		{
+			using lines_type = Lines_;
+			using states_type = States_;
+
+			template<typename String_>
+			using input = aheui_run<Lines_, typename make_raw_string<String_>::type, States_>;
+		};
 	}
+
+	template<typename Code_>
+	using aheui_eval = details::aheui_run<
+		typename details::split_raw_string<typename details::make_raw_string<Code_>::type>::type,
+		void, details::create_states>;
 }
 
 #endif
