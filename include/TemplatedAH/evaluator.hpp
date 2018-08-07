@@ -7,6 +7,8 @@
 
 namespace tah
 {
+#define TEMPLATEDAH_SUPPORT_PIPE (false)
+
 	namespace details
 	{
 		enum class direction
@@ -31,17 +33,25 @@ namespace tah
 		{
 			using type = typename Lines_::template get<Y_>;
 		};
-
 		template<typename Line_, std::size_t X_>
 		struct get_command_x
 		{
 			static constexpr char32_t value = Line_::type::value[X_];
 		};
-
 		template<typename Lines_, typename Cursor_>
 		struct get_command
 		{
 			static constexpr char32_t value = get_command_x<get_command_y<Lines_, Cursor_::y>, Cursor_::x>::value;
+		};
+
+		template<typename Storages_, typename Cursor_, char32_t SelectedStorage_>
+		struct aheui_states
+		{
+			static constexpr char32_t selected_storage = SelectedStorage_;
+
+			using storages = Storages_;
+			using cursor = Cursor_;
+			using storage = typename Storages_::template get<get_jongsung_index<SelectedStorage_>::value>;
 		};
 	}
 }

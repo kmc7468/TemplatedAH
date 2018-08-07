@@ -95,6 +95,589 @@ namespace tah
 		};
 
 		using empty_queue = queue<true, -1>;
+
+		template<std::size_t Index_, typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index;
+
+		template<typename... Storages_>
+		struct storages
+		{
+			template<char32_t Jongsung_>
+			using get = typename get_type_by_index<get_jongsung_index<Jongsung_>::value, Storages_...>::type;
+			template<char32_t Jongsung_, typename NewStorage_>
+			using set_type = typename set_storage_by_index<get_jongsung_index<Jongsung_>::value, NewStorage_, Storages_...>::type;
+		};
+
+		using create_storages = storages<
+			empty_stack, empty_stack, empty_stack, empty_stack, empty_stack, empty_stack, empty_stack,
+			empty_stack, empty_stack, empty_stack, empty_stack, empty_stack, empty_stack, empty_stack,
+			empty_stack, empty_stack, empty_stack, empty_stack, empty_stack, empty_stack, empty_stack,
+			empty_queue, empty_stack, empty_stack, empty_stack, empty_stack, empty_stack, empty_stack
+		>;
+
+		template<std::size_t Index_, typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index
+		{};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<0, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				NewStorage_, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<1, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, NewStorage_,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<2, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				NewStorage_, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<3, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, NewStorage_,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<4, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				NewStorage_, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<5, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, NewStorage_,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<6, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				NewStorage_, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<7, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, NewStorage_,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<8, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				NewStorage_, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<9, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, NewStorage_,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<10, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				NewStorage_, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<11, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, NewStorage_,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<12, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				NewStorage_, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<13, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, NewStorage_,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<14, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				NewStorage_, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<15, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, NewStorage_,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<16, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				NewStorage_, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<17, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, NewStorage_,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<18, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				NewStorage_, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<19, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, NewStorage_,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<20, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				NewStorage_, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<21, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, NewStorage_,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<22, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				NewStorage_, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<23, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, NewStorage_,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<24, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				NewStorage_, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<25, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, NewStorage_,
+				typename get_type_by_index<26, Storages_...>::type, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<26, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				NewStorage_, typename get_type_by_index<27, Storages_...>::type
+			>;
+		};
+		template<typename NewStorage_, typename... Storages_>
+		struct set_storage_by_index<27, NewStorage_, Storages_...>
+		{
+			using type = storages<
+				typename get_type_by_index<0, Storages_...>::type, typename get_type_by_index<1, Storages_...>::type,
+				typename get_type_by_index<2, Storages_...>::type, typename get_type_by_index<3, Storages_...>::type,
+				typename get_type_by_index<4, Storages_...>::type, typename get_type_by_index<5, Storages_...>::type,
+				typename get_type_by_index<6, Storages_...>::type, typename get_type_by_index<7, Storages_...>::type,
+				typename get_type_by_index<8, Storages_...>::type, typename get_type_by_index<9, Storages_...>::type,
+				typename get_type_by_index<10, Storages_...>::type, typename get_type_by_index<11, Storages_...>::type,
+				typename get_type_by_index<12, Storages_...>::type, typename get_type_by_index<13, Storages_...>::type,
+				typename get_type_by_index<14, Storages_...>::type, typename get_type_by_index<15, Storages_...>::type,
+				typename get_type_by_index<16, Storages_...>::type, typename get_type_by_index<17, Storages_...>::type,
+				typename get_type_by_index<18, Storages_...>::type, typename get_type_by_index<19, Storages_...>::type,
+				typename get_type_by_index<20, Storages_...>::type, typename get_type_by_index<21, Storages_...>::type,
+				typename get_type_by_index<22, Storages_...>::type, typename get_type_by_index<23, Storages_...>::type,
+				typename get_type_by_index<24, Storages_...>::type, typename get_type_by_index<25, Storages_...>::type,
+				typename get_type_by_index<26, Storages_...>::type, NewStorage_
+			>;
+		};
 	}
 }
 

@@ -135,7 +135,7 @@ namespace tah
 		template<char32_t Jongsung_>
 		struct get_jongsung_index<Jongsung_, sizeof(hangul::jongsungs) / sizeof(char32_t)>
 		{
-			static constexpr std::size_t value = -1;
+			static constexpr std::size_t value = static_cast<std::size_t>(-1);
 		};
 	}
 }
