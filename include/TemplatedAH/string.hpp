@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <type_traits>
+#include <utility>
 
 namespace tah
 {
@@ -51,6 +52,29 @@ namespace tah
 		struct make_raw_string
 		{
 			using type = typename make_raw_string_internal<String_, 0, sizeof(String_::str) / sizeof(char32_t) - 1>::type;
+		};
+
+		template<std::size_t N_, const char32_t(&String_)[N_], typename>
+		struct add_raw_string_internal;
+		
+		template<std::size_t N_, const char32_t(&String_)[N_], std::size_t... Index_>
+		struct add_raw_string_internal<N_, String_, std::index_sequence<Index_...>>
+		{
+			template<std::size_t M_, const char32_t(&String2_)[M_], typename>
+			struct add_raw_string_internal_internal;
+
+			template<std::size_t M_, const char32_t(&String2_)[M_], std::size_t... Index2_>
+			struct add_raw_string_internal_internal<M_, String2_, std::index_sequence<Index2_...>>
+			{
+				using type = raw_string<String_[Index_]..., String2_[Index2_]...>;
+			};
+		};
+
+		template<typename String_, typename String2_>
+		struct add_raw_string
+		{
+			using type = typename add_raw_string_internal<String_::length, String_::value, std::make_index_sequence<String_::length>>::
+				template add_raw_string_internal_internal<String2_::length, String2_::value, std::make_index_sequence<String2_::length>>::type;
 		};
 
 		template<typename String_, bool NewLine_, std::size_t Index_, std::size_t Length_, char32_t Character_, char32_t... String2_>
