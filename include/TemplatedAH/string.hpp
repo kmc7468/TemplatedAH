@@ -125,6 +125,18 @@ namespace tah
 		{
 			static constexpr bool error = true;
 		};
+
+		template<char32_t Jongsung_, std::size_t Index_ = 0>
+		struct get_jongsung_index
+		{
+			static constexpr std::size_t value =
+				(hangul::jongsungs[Index_] == Jongsung_) ? Index_ : (get_jongsung_index<Jongsung_, Index_ + 1>::value);
+		};
+		template<char32_t Jongsung_>
+		struct get_jongsung_index<Jongsung_, sizeof(hangul::jongsungs) / sizeof(char32_t)>
+		{
+			static constexpr std::size_t value = -1;
+		};
 	}
 }
 
