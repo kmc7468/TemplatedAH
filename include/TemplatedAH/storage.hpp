@@ -68,8 +68,11 @@ namespace tah
 			static constexpr bool assert_elements = sizeof...(Data_) + 1 >= Size_;
 
 			using dequeue_type = queue<false, Data_...>;
+			using pop_type = dequeue_type;
 			template<int_type Value_>
 			using enqueue_type = queue<false, Front_, Data_..., Value_>;
+			template<int_type Value_>
+			using push_type = enqueue_type<Value_>;
 		};
 		template<int_type Front_>
 		struct queue<false, Front_>
@@ -80,8 +83,11 @@ namespace tah
 			static constexpr bool assert_elements = Size_ <= 1;
 
 			using dequeue_type = queue<true, -1>;
+			using pop_type = dequeue_type;
 			template<int_type Value_>
 			using enqueue_type = queue<false, Front_, Value_>;
+			template<int_type Value_>
+			using push_type = enqueue_type<Value_>;
 		};
 		template<int_type Front_, int_type... Data_>
 		struct queue<true, Front_, Data_...>
@@ -92,6 +98,8 @@ namespace tah
 
 			template<int_type Value_>
 			using enqueue_type = queue<false, Value_>;
+			template<int_type Value_>
+			using push_type = enqueue_type<Value_>;
 		};
 
 		using empty_queue = queue<true, -1>;
