@@ -83,6 +83,21 @@ struct name											\
 			using type = typename add_raw_string_internal<String_::length, String_::value, std::make_index_sequence<String_::length>>::
 				template add_raw_string_internal_internal<String2_::length, String2_::value, std::make_index_sequence<String2_::length>>::type;
 		};
+		template<typename String2_>
+		struct add_raw_string<void, String2_>
+		{
+			using type = String2_;
+		};
+		template<typename String_>
+		struct add_raw_string<String_, void>
+		{
+			using type = String_;
+		};
+		template<>
+		struct add_raw_string<void, void>
+		{
+			using type = void;
+		};
 
 		template<typename String_, bool NewLine_, std::size_t Index_, std::size_t Length_, char32_t Character_, char32_t... String2_>
 		struct split_raw_string_internal

@@ -36,6 +36,89 @@ namespace tah
 				static_cast<direction>(~static_cast<int>(Direction_));
 		};
 
+		template<char32_t Jungsung_, typename Cursor_, typename = void>
+		struct compute_direction
+		{
+			using type = Cursor_;
+		};
+
+		template<std::size_t X_, std::size_t Y_, std::size_t Speed_, tah::details::direction Direction_>
+		struct cursor;
+
+		template<typename Cursor_>
+		struct compute_direction<U'た', Cursor_>
+		{
+			using type = cursor<Cursor_::x, Cursor_::y, 1, direction::right>;
+		};
+		template<typename Cursor_>
+		struct compute_direction<U'ち', Cursor_>
+		{
+			using type = cursor<Cursor_::x, Cursor_::y, 2, direction::right>;
+		};
+		template<typename Cursor_>
+		struct compute_direction<U'っ', Cursor_>
+		{
+			using type = cursor<Cursor_::x, Cursor_::y, 1, direction::left>;
+		};
+		template<typename Cursor_>
+		struct compute_direction<U'づ', Cursor_>
+		{
+			using type = cursor<Cursor_::x, Cursor_::y, 2, direction::left>;
+		};
+		template<typename Cursor_>
+		struct compute_direction<U'で', Cursor_>
+		{
+			using type = cursor<Cursor_::x, Cursor_::y, 1, direction::up>;
+		};
+		template<typename Cursor_>
+		struct compute_direction<U'に', Cursor_>
+		{
+			using type = cursor<Cursor_::x, Cursor_::y, 2, direction::up>;
+		};
+		template<typename Cursor_>
+		struct compute_direction<U'ぬ', Cursor_>
+		{
+			using type = cursor<Cursor_::x, Cursor_::y, 1, direction::down>;
+		};
+		template<typename Cursor_>
+		struct compute_direction<U'ば', Cursor_>
+		{
+			using type = cursor<Cursor_::x, Cursor_::y, 2, direction::down>;
+		};
+		template<typename Cursor_>
+		struct compute_direction<U'ぱ', Cursor_,
+			typename std::enable_if<Cursor_::direction == direction::left ||
+			Cursor_::direction == direction::right>::type>
+		{
+			using type = cursor<Cursor_::x, Cursor_::y, Cursor_::speed, Cursor_::direction>;
+		};
+		template<typename Cursor_>
+		struct compute_direction<U'ぱ', Cursor_,
+			typename std::enable_if<Cursor_::direction == direction::up ||
+			Cursor_::direction == direction::down>::type>
+		{
+			using type = cursor<Cursor_::x, Cursor_::y, Cursor_::speed, reverse_direction<Cursor_::direction>::value>;
+		};
+		template<typename Cursor_>
+		struct compute_direction<U'び', Cursor_,
+			typename std::enable_if<Cursor_::direction == direction::left ||
+			Cursor_::direction == direction::right>::type>
+		{
+			using type = cursor<Cursor_::x, Cursor_::y, Cursor_::speed, reverse_direction<Cursor_::direction>::value>;
+		};
+		template<typename Cursor_>
+		struct compute_direction<U'び', Cursor_,
+			typename std::enable_if<Cursor_::direction == direction::up ||
+			Cursor_::direction == direction::down>::type>
+		{
+			using type = cursor<Cursor_::x, Cursor_::y, Cursor_::speed, Cursor_::direction>;
+		};
+		template<typename Cursor_>
+		struct compute_direction<U'ひ', Cursor_>
+		{
+			using type = cursor<Cursor_::x, Cursor_::y, Cursor_::speed, reverse_direction<Cursor_::direction>::value>;
+		};
+
 		template<std::size_t X_, std::size_t Y_, std::size_t Speed_, tah::details::direction Direction_>
 		struct cursor
 		{
@@ -46,7 +129,7 @@ namespace tah
 
 			using reversed_type = cursor<X_, Y_, Speed_, reverse_direction<Direction_>::value>;
 		};
-		
+
 		template<typename Lines_, std::size_t Y_>
 		struct get_command_y
 		{
@@ -63,25 +146,26 @@ namespace tah
 			static constexpr char32_t value = get_command_x<get_command_y<Lines_, Cursor_::y>, Cursor_::x>::value;
 		};
 
-		template<typename Storages_, typename Cursor_, char32_t SelectedStorage_>
+		template<typename Storages_, typename Cursor_, char32_t SelectedStorage_, bool IsExited_>
 		struct aheui_states
 		{
 			static constexpr char32_t selected_storage = SelectedStorage_;
+			static constexpr bool is_exited = IsExited_;
 
 			using storages = Storages_;
 			using cursor = Cursor_;
 			using storage = typename Storages_::template get<get_jongsung_index<SelectedStorage_>::value>;
 		};
 
-		using create_states = aheui_states<create_storages, cursor<0, 0, 1, direction::down>, 0>;
+		using create_states = aheui_states<create_storages, cursor<0, 0, 1, direction::down>, 0, false>;
 
 		template<typename Lines_, typename Cursor_, typename = void>
 		struct move_to_cursor;
 
 		template<typename Lines_, typename Cursor_>
 		struct move_to_cursor<Lines_, Cursor_,
-			typename std::enable_if<Cursor_::y < Lines_::line &&
-									Cursor_::x < Lines_::template get<Cursor_::y>::length>::type>
+			typename std::enable_if < Cursor_::y < Lines_::line &&
+			Cursor_::x < Lines_::template get<Cursor_::y>::length>::type>
 		{
 			using type = Cursor_;
 		};
@@ -106,9 +190,9 @@ namespace tah
 		template<typename Lines_, typename Cursor_>
 		struct move_to_cursor<Lines_, Cursor_,
 			typename std::enable_if<Cursor_::y < Lines_::line &&
-									Cursor_::x >= Lines_::template get<Cursor_::y>::length &&
-									(Cursor_::x != static_cast<std::size_t>(-1) &&
-									 Cursor_::x != static_cast<std::size_t>(-2))>::type>
+			Cursor_::x >= Lines_::template get<Cursor_::y>::length &&
+			(Cursor_::x != static_cast<std::size_t>(-1) &&
+				Cursor_::x != static_cast<std::size_t>(-2))>::type>
 		{
 			using type = cursor<0, Cursor_::y, Cursor_::speed, Cursor_::direction>;
 		};
@@ -119,7 +203,7 @@ namespace tah
 									(Cursor_::x == static_cast<std::size_t>(-1) ||
 									 Cursor_::x == static_cast<std::size_t>(-2))>::type>
 		{
-			using type = cursor<Cursor_::template get<Cursor_::y>::length - 1, Cursor_::y, Cursor_::speed, Cursor_::direction>;
+			using type = cursor<Lines_::template get<Cursor_::y>::length - 1, Cursor_::y, Cursor_::speed, Cursor_::direction>;
 		};
 
 		template<typename Cursor_, typename = void>
@@ -128,12 +212,12 @@ namespace tah
 		template<typename Cursor_>
 		struct move_cursor<Cursor_, typename std::enable_if<Cursor_::direction == direction::left>::type>
 		{
-			using type = cursor<Cursor_::x + Cursor_::speed, Cursor_::y, Cursor_::speed, Cursor_::direction>;
+			using type = cursor<Cursor_::x - Cursor_::speed, Cursor_::y, Cursor_::speed, Cursor_::direction>;
 		};
 		template<typename Cursor_>
 		struct move_cursor<Cursor_, typename std::enable_if<Cursor_::direction == direction::right>::type>
 		{
-			using type = cursor<Cursor_::x - Cursor_::speed, Cursor_::y, Cursor_::speed, Cursor_::direction>;
+			using type = cursor<Cursor_::x + Cursor_::speed, Cursor_::y, Cursor_::speed, Cursor_::direction>;
 		};
 		template<typename Cursor_>
 		struct move_cursor<Cursor_, typename std::enable_if<Cursor_::direction == direction::up>::type>
@@ -164,7 +248,8 @@ namespace tah
 			static constexpr bool is_success = true;
 
 			using states_type = aheui_states<typename States_::storages::template set_type<States_::selected_storage, new_storage_>,
-				typename move_cursor<typename States_::cursor>::type, States_::selected_storage>;
+				typename move_cursor<typename States_::cursor>::type, States_::selected_storage, States_::is_exited>;
+			using output_type = void;
 		};
 		template<typename States_>
 		struct aheui_eval_internal_e<States_, typename std::enable_if<!States_::storage::template assert_elements<2>>::type>
@@ -172,7 +257,8 @@ namespace tah
 			static constexpr bool is_success = false;
 
 			using states_type = aheui_states<typename States_::storages,
-				typename move_cursor<typename States_::cursor::reversed_type>::type, States_::selected_storage>;
+				typename move_cursor<typename States_::cursor::reversed_type>::type, States_::selected_storage, States_::is_exited>;
+			using output_type = void;
 		};
 
 		template<typename States_, typename = void>
@@ -190,7 +276,8 @@ namespace tah
 			static constexpr bool is_success = true;
 
 			using states_type = aheui_states<typename States_::storages::template set_type<States_::selected_storage, new_storage_>,
-				typename move_cursor<typename States_::cursor>::type, States_::selected_storage>;
+				typename move_cursor<typename States_::cursor>::type, States_::selected_storage, States_::is_exited>;
+			using output_type = void;
 		};
 		template<typename States_>
 		struct aheui_eval_internal_E<States_, typename std::enable_if<!States_::storage::template assert_elements<2>>::type>
@@ -198,7 +285,8 @@ namespace tah
 			static constexpr bool is_success = false;
 
 			using states_type = aheui_states<typename States_::storages,
-				typename move_cursor<typename States_::cursor::reversed_type>::type, States_::selected_storage>;
+				typename move_cursor<typename States_::cursor::reversed_type>::type, States_::selected_storage, States_::is_exited>;
+			using output_type = void;
 		};
 
 		template<typename States_, typename = void>
@@ -216,7 +304,8 @@ namespace tah
 			static constexpr bool is_success = true;
 
 			using states_type = aheui_states<typename States_::storages::template set_type<States_::selected_storage, new_storage_>,
-				typename move_cursor<typename States_::cursor>::type, States_::selected_storage>;
+				typename move_cursor<typename States_::cursor>::type, States_::selected_storage, States_::is_exited>;
+			using output_type = void;
 		};
 		template<typename States_>
 		struct aheui_eval_internal_x<States_, typename std::enable_if<!States_::storage::template assert_elements<2>>::type>
@@ -224,7 +313,8 @@ namespace tah
 			static constexpr bool is_success = false;
 
 			using states_type = aheui_states<typename States_::storages,
-				typename move_cursor<typename States_::cursor::reversed_type>::type, States_::selected_storage>;
+				typename move_cursor<typename States_::cursor::reversed_type>::type, States_::selected_storage, States_::is_exited>;
+			using output_type = void;
 		};
 
 		template<typename States_, typename = void>
@@ -242,7 +332,8 @@ namespace tah
 			static constexpr bool is_success = true;
 
 			using states_type = aheui_states<typename States_::storages::template set_type<States_::selected_storage, new_storage_>,
-				typename move_cursor<typename States_::cursor>::type, States_::selected_storage>;
+				typename move_cursor<typename States_::cursor>::type, States_::selected_storage, States_::is_exited>;
+			using output_type = void;
 		};
 		template<typename States_>
 		struct aheui_eval_internal_s<States_, typename std::enable_if<!States_::storage::template assert_elements<2>>::type>
@@ -250,7 +341,8 @@ namespace tah
 			static constexpr bool is_success = false;
 
 			using states_type = aheui_states<typename States_::storages,
-				typename move_cursor<typename States_::cursor::reversed_type>::type, States_::selected_storage>;
+				typename move_cursor<typename States_::cursor::reversed_type>::type, States_::selected_storage, States_::is_exited>;
+			using output_type = void;
 		};
 
 		template<typename States_, typename = void>
@@ -268,7 +360,8 @@ namespace tah
 			static constexpr bool is_success = true;
 
 			using states_type = aheui_states<typename States_::storages::template set_type<States_::selected_storage, new_storage_>,
-				typename move_cursor<typename States_::cursor>::type, States_::selected_storage>;
+				typename move_cursor<typename States_::cursor>::type, States_::selected_storage, States_::is_exited>;
+			using output_type = void;
 		};
 		template<typename States_>
 		struct aheui_eval_internal_f<States_, typename std::enable_if<!States_::storage::template assert_elements<2>>::type>
@@ -276,7 +369,8 @@ namespace tah
 			static constexpr bool is_success = false;
 
 			using states_type = aheui_states<typename States_::storages,
-				typename move_cursor<typename States_::cursor::reversed_type>::type, States_::selected_storage>;
+				typename move_cursor<typename States_::cursor::reversed_type>::type, States_::selected_storage, States_::is_exited>;
+			using output_type = void;
 		};
 
 		template<char32_t Jongsung_, typename States_>
@@ -289,6 +383,7 @@ namespace tah
 			static constexpr bool is_success = internal_type_::is_success;
 
 			using states_type = typename internal_type_::states_type;
+			using output_type = typename internal_type_::output_type;
 		};
 		template<char32_t Jongsung_, typename States_>
 		struct aheui_eval<U'え', Jongsung_, States_>
@@ -300,6 +395,7 @@ namespace tah
 			static constexpr bool is_success = internal_type_::is_success;
 
 			using states_type = typename internal_type_::states_type;
+			using output_type = typename internal_type_::output_type;
 		};
 		template<char32_t Jongsung_, typename States_>
 		struct aheui_eval<U'ぜ', Jongsung_, States_>
@@ -311,6 +407,7 @@ namespace tah
 			static constexpr bool is_success = internal_type_::is_success;
 
 			using states_type = typename internal_type_::states_type;
+			using output_type = typename internal_type_::output_type;
 		};
 		template<char32_t Jongsung_, typename States_>
 		struct aheui_eval<U'い', Jongsung_, States_>
@@ -322,6 +419,7 @@ namespace tah
 			static constexpr bool is_success = internal_type_::is_success;
 
 			using states_type = typename internal_type_::states_type;
+			using output_type = typename internal_type_::output_type;
 		};
 		template<char32_t Jongsung_, typename States_>
 		struct aheui_eval<U'ぉ', Jongsung_, States_>
@@ -333,6 +431,71 @@ namespace tah
 			static constexpr bool is_success = internal_type_::is_success;
 
 			using states_type = typename internal_type_::states_type;
+			using output_type = typename internal_type_::output_type;
+		};
+		template<char32_t Jongsung_, typename States_>
+		struct aheui_eval<U'ぞ', Jongsung_, States_>
+		{
+			static constexpr bool is_success = true;
+
+			using states_type = aheui_states<typename States_::storages,
+				typename States_::cursor, States_::selected_storage, true>;
+			using output_type = void;
+		};
+
+		template<typename Output_, int_type Result_>
+		struct aheui_output
+		{
+			static constexpr int_type result = Result_;
+
+			using output = Output_;
+		};
+
+		template<typename Lines_, typename Input_, typename Output_, typename States_, typename = void>
+		struct aheui_run_internal;
+
+		template<typename Lines_, typename Input_, typename Output_, typename Eval_, typename = void>
+		struct aheui_run_internal_internal;
+
+		template<typename Lines_, typename Input_, typename Output_, typename Eval_>
+		struct aheui_run_internal_internal<Lines_, Input_, Output_, Eval_,
+			typename std::enable_if<!Eval_::states_type::is_exited>::type>
+		{
+		private:
+			using moved_cursor_internal_ = typename Eval_::states_type::cursor;
+			using moved_cursor_ = typename move_to_cursor<Lines_, moved_cursor_internal_>::type;
+
+		public:
+			using next_eval = typename aheui_run_internal<
+				Lines_, Input_, typename Eval_::states_type, Output_>::eval_;
+		};
+		template<typename Lines_, typename Input_, typename Output_, typename Eval_>
+		struct aheui_run_internal_internal<Lines_, Input_, Output_, Eval_,
+			typename std::enable_if<Eval_::states_type::is_exited>::type>
+		{
+			using next_eval = Eval_;
+		};
+
+		template<typename Lines_, typename Input_, typename States_, typename Output_>
+		struct aheui_run_internal<Lines_, Input_, States_, Output_,
+			typename std::enable_if<hangul::is_hangul<get_command<Lines_, typename States_::cursor>::value>>::type>
+		{
+			template<typename Lines_, typename Input_, typename Output_, typename Eval_, typename>
+			friend struct aheui_run_internal_internal;
+
+		private:
+			static constexpr char32_t command_ = get_command<Lines_, typename States_::cursor>::value;
+			static constexpr char32_t chosung_ = divide_hangul<command_>::chosung;
+			static constexpr char32_t jungsung_ = divide_hangul<command_>::jungsung;
+			static constexpr char32_t jongsung_ = divide_hangul<command_>::jongsung;
+			using new_cursor_ = typename compute_direction<jungsung_, typename States_::cursor>::type;
+			using eval_ = aheui_eval<chosung_, jongsung_,
+				aheui_states<typename States_::storages, new_cursor_, States_::selected_storage, States_::is_exited>>;
+			using internal_ = aheui_run_internal_internal<Lines_, Input_, Output_, eval_>;
+
+		public:
+			using states = typename internal_::next_eval::states_type;
+			using output = typename add_raw_string<Output_, typename internal_::next_eval::output_type>::type;
 		};
 
 		template<typename Lines_, typename Input_, typename States_>
@@ -344,6 +507,7 @@ namespace tah
 
 			template<typename String_>
 			using input = aheui_run<Lines_, typename add_raw_string<Input_, typename make_raw_string<String_>::type>::type, States_>;
+			using eval = aheui_run_internal<Lines_, Input_, States_, void>;
 		};
 		template<typename Lines_, typename States_>
 		struct aheui_run<Lines_, void, States_>
@@ -353,13 +517,22 @@ namespace tah
 
 			template<typename String_>
 			using input = aheui_run<Lines_, typename make_raw_string<String_>::type, States_>;
+			using eval = aheui_run_internal<Lines_, void, States_, void>;
 		};
 	}
+
+	using details::int_type;
+	using details::aheui_output;
 
 	template<typename Code_>
 	using aheui_eval = details::aheui_run<
 		typename details::split_raw_string<typename details::make_raw_string<Code_>::type>::type,
 		void, details::create_states>;
+
+	template<typename Code_, typename States_>
+	using aheui_eval_raw = details::aheui_run<
+		typename details::split_raw_string<typename details::make_raw_string<Code_>::type>::type,
+		void, States_>;
 }
 
 #endif
