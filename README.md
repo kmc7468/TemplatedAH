@@ -1,5 +1,27 @@
 # TemplatedAH
 템플릿 메타 프로그래밍을 이용한 아희 인터프리터
+## 예제
+더 많은 예제는 [examples](https://github.com/kmc7468/TemplatedAH/tree/master/examples) 디렉터리에서 확인하실 수 있습니다.
+```
+// examples/calc_example.cpp
+#include <TemplatedAH/evaluator.hpp>
+#include <iostream>
+
+TEMPLATEDAH_STRING(code, U"땨뎌더희");
+
+int main()
+{
+	using storages = tah::details::create_storages;
+	using storage_pushed = storages::get<0>::push_type<1>::push_type<2>::push_type<3>;
+	using states = tah::details::aheui_states<storages::set_type<0, storage_pushed>,
+		tah::details::cursor<0, 0, 1, tah::details::direction::right>, 0, false>;
+
+	using eval = tah::aheui_eval_raw<code, states>::eval;
+	std::cout << (eval::states::storage::front) << std::endl;
+
+	return 0;
+}
+```
 ## 요구 사항
 - C++14 또는 이후의 표준을 지원하는 C++ 컴파일러
 - 긴 컴파일 오류 메세지를 읽을 수 있는 용기
