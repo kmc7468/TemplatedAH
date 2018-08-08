@@ -1,4 +1,4 @@
-#ifndef TEMPLATEDAH_HEADER_STRING_HPP
+Ôªø#ifndef TEMPLATEDAH_HEADER_STRING_HPP
 #define TEMPLATEDAH_HEADER_STRING_HPP
 
 #include <cstddef>
@@ -135,18 +135,18 @@ struct name											\
 		{
 			static constexpr char32_t chosungs[] =
 			{
-				U'§°', U'§¢', U'§§', U'§ß', U'§®', U'§©', U'§±', U'§≤', U'§≥', U'§µ', U'§∂', U'§∑', U'§∏',
-				U'§π', U'§∫', U'§ª', U'§º', U'§Ω', U'§æ'
+				U'„Ñ±', U'„Ñ≤', U'„Ñ¥', U'„Ñ∑', U'„Ñ∏', U'„Ñπ', U'„ÖÅ', U'„ÖÇ', U'„ÖÉ', U'„ÖÖ', U'„ÖÜ', U'„Öá', U'„Öà',
+				U'„Öâ', U'„Öä', U'„Öã', U'„Öå', U'„Öç', U'„Öé'
 			};
 			static constexpr char32_t jungsungs[] =
 			{
-				U'§ø', U'§¿', U'§¡', U'§¬', U'§√', U'§ƒ', U'§≈', U'§∆', U'§«', U'§»', U'§…', U'§ ', U'§À',
-				U'§Ã', U'§Õ', U'§Œ', U'§œ', U'§–', U'§—', U'§“', U'§”'
+				U'„Öè', U'„Öê', U'„Öë', U'„Öí', U'„Öì', U'„Öî', U'„Öï', U'„Öñ', U'„Öó', U'„Öò', U'„Öô', U'„Öö', U'„Öõ',
+				U'„Öú', U'„Öù', U'„Öû', U'„Öü', U'„Ö†', U'„Ö°', U'„Ö¢', U'„Ö£'
 			};
 			static constexpr char32_t jongsungs[] =
 			{
-				0, U'§°', U'§¢', U'§£', U'§§', U'§•', U'§¶', U'§ß', U'§©', U'§™', U'§´', U'§¨', U'§≠', U'§Æ',
-				U'§Ø', U'§∞', U'§±', U'§≤', U'§¥', U'§µ', U'§∂', U'§∑', U'§∏', U'§∫', U'§ª', U'§º', U'§Ω', U'§æ'
+				0, U'„Ñ±', U'„Ñ≤', U'„Ñ≥', U'„Ñ¥', U'„Ñµ', U'„Ñ∂', U'„Ñ∑', U'„Ñπ', U'„Ñ∫', U'„Ñª', U'„Ñº', U'„ÑΩ', U'„Ñæ',
+				U'„Ñø', U'„ÖÄ', U'„ÖÅ', U'„ÖÇ', U'„ÖÑ', U'„ÖÖ', U'„ÖÜ', U'„Öá', U'„Öà', U'„Öä', U'„Öã', U'„Öå', U'„Öç', U'„Öé'
 			};
 			template<char32_t Character_>
 			static constexpr bool is_hangul = Character_ >= 0xAC00 && Character_ <= 0xD7A3;

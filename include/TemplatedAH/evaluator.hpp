@@ -1,4 +1,4 @@
-#ifndef TEMPLATEDAH_HEADER_EVALUATOR_HPP
+ï»¿#ifndef TEMPLATEDAH_HEADER_EVALUATOR_HPP
 #define TEMPLATEDAH_HEADER_EVALUATOR_HPP
 
 #include "storage.hpp"
@@ -47,75 +47,75 @@ namespace tah
 		struct cursor;
 
 		template<typename Cursor_>
-		struct compute_direction<U'¤¿', Cursor_>
+		struct compute_direction<U'ã…', Cursor_>
 		{
 			using type = cursor<Cursor_::x, Cursor_::y, 1, direction::right>;
 		};
 		template<typename Cursor_>
-		struct compute_direction<U'¤Á', Cursor_>
+		struct compute_direction<U'ã…‘', Cursor_>
 		{
 			using type = cursor<Cursor_::x, Cursor_::y, 2, direction::right>;
 		};
 		template<typename Cursor_>
-		struct compute_direction<U'¤Ã', Cursor_>
+		struct compute_direction<U'ã…“', Cursor_>
 		{
 			using type = cursor<Cursor_::x, Cursor_::y, 1, direction::left>;
 		};
 		template<typename Cursor_>
-		struct compute_direction<U'¤Å', Cursor_>
+		struct compute_direction<U'ã…•', Cursor_>
 		{
 			using type = cursor<Cursor_::x, Cursor_::y, 2, direction::left>;
 		};
 		template<typename Cursor_>
-		struct compute_direction<U'¤Ç', Cursor_>
+		struct compute_direction<U'ã…—', Cursor_>
 		{
 			using type = cursor<Cursor_::x, Cursor_::y, 1, direction::up>;
 		};
 		template<typename Cursor_>
-		struct compute_direction<U'¤Ë', Cursor_>
+		struct compute_direction<U'ã…›', Cursor_>
 		{
 			using type = cursor<Cursor_::x, Cursor_::y, 2, direction::up>;
 		};
 		template<typename Cursor_>
-		struct compute_direction<U'¤Ì', Cursor_>
+		struct compute_direction<U'ã…œ', Cursor_>
 		{
 			using type = cursor<Cursor_::x, Cursor_::y, 1, direction::down>;
 		};
 		template<typename Cursor_>
-		struct compute_direction<U'¤Ð', Cursor_>
+		struct compute_direction<U'ã… ', Cursor_>
 		{
 			using type = cursor<Cursor_::x, Cursor_::y, 2, direction::down>;
 		};
 		template<typename Cursor_>
-		struct compute_direction<U'¤Ñ', Cursor_,
+		struct compute_direction<U'ã…¡', Cursor_,
 			typename std::enable_if<Cursor_::direction == direction::left ||
 			Cursor_::direction == direction::right>::type>
 		{
 			using type = cursor<Cursor_::x, Cursor_::y, Cursor_::speed, Cursor_::direction>;
 		};
 		template<typename Cursor_>
-		struct compute_direction<U'¤Ñ', Cursor_,
+		struct compute_direction<U'ã…¡', Cursor_,
 			typename std::enable_if<Cursor_::direction == direction::up ||
 			Cursor_::direction == direction::down>::type>
 		{
 			using type = cursor<Cursor_::x, Cursor_::y, Cursor_::speed, reverse_direction<Cursor_::direction>::value>;
 		};
 		template<typename Cursor_>
-		struct compute_direction<U'¤Ó', Cursor_,
+		struct compute_direction<U'ã…£', Cursor_,
 			typename std::enable_if<Cursor_::direction == direction::left ||
 			Cursor_::direction == direction::right>::type>
 		{
 			using type = cursor<Cursor_::x, Cursor_::y, Cursor_::speed, reverse_direction<Cursor_::direction>::value>;
 		};
 		template<typename Cursor_>
-		struct compute_direction<U'¤Ó', Cursor_,
+		struct compute_direction<U'ã…£', Cursor_,
 			typename std::enable_if<Cursor_::direction == direction::up ||
 			Cursor_::direction == direction::down>::type>
 		{
 			using type = cursor<Cursor_::x, Cursor_::y, Cursor_::speed, Cursor_::direction>;
 		};
 		template<typename Cursor_>
-		struct compute_direction<U'¤Ò', Cursor_>
+		struct compute_direction<U'ã…¢', Cursor_>
 		{
 			using type = cursor<Cursor_::x, Cursor_::y, Cursor_::speed, reverse_direction<Cursor_::direction>::value>;
 		};
@@ -375,7 +375,7 @@ namespace tah
 		};
 
 		template<char32_t Jongsung_, typename States_>
-		struct aheui_eval<U'¤§', Jongsung_, States_>
+		struct aheui_eval<U'ã„·', Jongsung_, States_>
 		{
 		private:
 			using internal_type_ = aheui_eval_internal_e<States_>;
@@ -387,7 +387,7 @@ namespace tah
 			using output_type = typename internal_type_::output_type;
 		};
 		template<char32_t Jongsung_, typename States_>
-		struct aheui_eval<U'¤¨', Jongsung_, States_>
+		struct aheui_eval<U'ã„¸', Jongsung_, States_>
 		{
 		private:
 			using internal_type_ = aheui_eval_internal_E<States_>;
@@ -399,7 +399,7 @@ namespace tah
 			using output_type = typename internal_type_::output_type;
 		};
 		template<char32_t Jongsung_, typename States_>
-		struct aheui_eval<U'¤¼', Jongsung_, States_>
+		struct aheui_eval<U'ã…Œ', Jongsung_, States_>
 		{
 		private:
 			using internal_type_ = aheui_eval_internal_x<States_>;
@@ -411,7 +411,7 @@ namespace tah
 			using output_type = typename internal_type_::output_type;
 		};
 		template<char32_t Jongsung_, typename States_>
-		struct aheui_eval<U'¤¤', Jongsung_, States_>
+		struct aheui_eval<U'ã„´', Jongsung_, States_>
 		{
 		private:
 			using internal_type_ = aheui_eval_internal_s<States_>;
@@ -423,7 +423,7 @@ namespace tah
 			using output_type = typename internal_type_::output_type;
 		};
 		template<char32_t Jongsung_, typename States_>
-		struct aheui_eval<U'¤©', Jongsung_, States_>
+		struct aheui_eval<U'ã„¹', Jongsung_, States_>
 		{
 		private:
 			using internal_type_ = aheui_eval_internal_f<States_>;
@@ -435,7 +435,7 @@ namespace tah
 			using output_type = typename internal_type_::output_type;
 		};
 		template<char32_t Jongsung_, typename States_>
-		struct aheui_eval<U'¤¾', Jongsung_, States_>
+		struct aheui_eval<U'ã…Ž', Jongsung_, States_>
 		{
 			static constexpr bool is_success = true;
 
