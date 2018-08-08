@@ -2,7 +2,7 @@
 템플릿 메타 프로그래밍을 이용한 아희 인터프리터
 ## 예제
 더 많은 예제는 [examples](https://github.com/kmc7468/TemplatedAH/tree/master/examples) 디렉터리에서 확인하실 수 있습니다.
-```
+```cpp
 // examples/calc_example.cpp
 #include <TemplatedAH/evaluator.hpp>
 #include <iostream>
