@@ -442,6 +442,23 @@ struct name											\
 
 			using input_type = void;
 		};
+
+		template<typename Input_>
+		struct to_character
+		{
+			static constexpr int_type value = static_cast<int_type>(Input_::value[0]);
+
+			using input_type = typename remove_raw_string_prefix<Input_, 1>::type;
+		};
+		template<>
+		struct to_character<void>
+		{
+#ifndef TEMPLATEDAH_EOF_ERROR
+			static constexpr int_type value = -1;
+#endif
+
+			using input_type = void;
+		};
 	}
 }
 
