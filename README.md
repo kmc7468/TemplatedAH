@@ -4,6 +4,7 @@
 더 많은 예제는 [examples](https://github.com/kmc7468/TemplatedAH/tree/master/examples) 디렉터리에서 확인하실 수 있습니다.
 ```cpp
 // examples/calc_example.cpp
+
 #include <TemplatedAH/evaluator.hpp>
 #include <iostream>
 
@@ -14,9 +15,10 @@ int main()
 	using storages = tah::details::create_storages;
 	using storage_pushed = storages::get<0>::push_type<1>::push_type<2>::push_type<3>;
 	using states = tah::details::aheui_states<storages::set_type<0, storage_pushed>,
-		tah::details::cursor<0, 0, 1, tah::details::direction::right>, 0, false>;
+		tah::details::cursor<0, 0, 1, tah::details::direction::right>, 0, false, tah::details::create_optional_int_type_empty>;
 
 	using eval = tah::aheui_eval_raw<code, states>::eval;
+	std::cout << (eval::result::value) << std::endl;
 	std::cout << (eval::states::storage::front) << std::endl;
 
 	return 0;
