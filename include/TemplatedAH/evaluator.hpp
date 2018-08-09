@@ -717,11 +717,11 @@ namespace tah
 		template<typename Lines_, typename Input_, typename Output_, typename States_, typename = void>
 		struct aheui_run_internal;
 
-		template<typename Lines_, typename Output_, typename Eval_, typename This_, typename = void>
+		template<typename Lines_, typename Input_, typename Eval_, typename = void>
 		struct aheui_run_internal_internal;
 
-		template<typename Lines_, typename Output_, typename Eval_, typename This_>
-		struct aheui_run_internal_internal<Lines_, Output_, Eval_, This_,
+		template<typename Lines_, typename Input_, typename Eval_>
+		struct aheui_run_internal_internal<Lines_, Input_, Eval_,
 			typename std::enable_if<!Eval_::states_type::is_exited>::type>
 		{
 		private:
