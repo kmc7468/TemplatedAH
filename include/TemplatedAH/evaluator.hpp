@@ -247,7 +247,8 @@ namespace tah
 			using type = cursor<Cursor_::x, Cursor_::y + Cursor_::speed, Cursor_::speed, Cursor_::direction>;
 		};
 
-		template<char32_t Chosung_, char32_t Jongsung_, typename States_, typename Input_, typename = void>
+		template<char32_t Chosung_, char32_t Jongsung_, typename States_,
+			typename Input_, typename Output_, typename = void>
 		struct aheui_eval;
 
 		template<typename States_, typename = void>
@@ -551,8 +552,8 @@ namespace tah
 				typename States_::result>;
 		};
 
-		template<char32_t Jongsung_, typename States_, typename Input_>
-		struct aheui_eval<U'ㄷ', Jongsung_, States_, Input_>
+		template<char32_t Jongsung_, typename States_, typename Input_, typename Output_>
+		struct aheui_eval<U'ㄷ', Jongsung_, States_, Input_, Output_>
 		{
 		private:
 			using internal_type_ = aheui_eval_internal_e<States_>;
@@ -561,11 +562,11 @@ namespace tah
 			static constexpr bool is_success = internal_type_::is_success;
 
 			using states_type = typename internal_type_::states_type;
-			using output_type = void;
+			using output_type = Output_;
 			using input_type = Input_;
 		};
-		template<char32_t Jongsung_, typename States_, typename Input_>
-		struct aheui_eval<U'ㄸ', Jongsung_, States_, Input_>
+		template<char32_t Jongsung_, typename States_, typename Input_, typename Output_>
+		struct aheui_eval<U'ㄸ', Jongsung_, States_, Input_, Output_>
 		{
 		private:
 			using internal_type_ = aheui_eval_internal_E<States_>;
@@ -574,11 +575,11 @@ namespace tah
 			static constexpr bool is_success = internal_type_::is_success;
 
 			using states_type = typename internal_type_::states_type;
-			using output_type = void;
+			using output_type = Output_;
 			using input_type = Input_;
 		};
-		template<char32_t Jongsung_, typename States_, typename Input_>
-		struct aheui_eval<U'ㅌ', Jongsung_, States_, Input_>
+		template<char32_t Jongsung_, typename States_, typename Input_, typename Output_>
+		struct aheui_eval<U'ㅌ', Jongsung_, States_, Input_, Output_>
 		{
 		private:
 			using internal_type_ = aheui_eval_internal_x<States_>;
@@ -587,11 +588,11 @@ namespace tah
 			static constexpr bool is_success = internal_type_::is_success;
 
 			using states_type = typename internal_type_::states_type;
-			using output_type = void;
+			using output_type = Output_;
 			using input_type = Input_;
 		};
-		template<char32_t Jongsung_, typename States_, typename Input_>
-		struct aheui_eval<U'ㄴ', Jongsung_, States_, Input_>
+		template<char32_t Jongsung_, typename States_, typename Input_, typename Output_>
+		struct aheui_eval<U'ㄴ', Jongsung_, States_, Input_, Output_>
 		{
 		private:
 			using internal_type_ = aheui_eval_internal_s<States_>;
@@ -600,11 +601,11 @@ namespace tah
 			static constexpr bool is_success = internal_type_::is_success;
 
 			using states_type = typename internal_type_::states_type;
-			using output_type = void;
+			using output_type = Output_;
 			using input_type = Input_;
 		};
-		template<char32_t Jongsung_, typename States_, typename Input_>
-		struct aheui_eval<U'ㄹ', Jongsung_, States_, Input_>
+		template<char32_t Jongsung_, typename States_, typename Input_, typename Output_>
+		struct aheui_eval<U'ㄹ', Jongsung_, States_, Input_, Output_>
 		{
 		private:
 			using internal_type_ = aheui_eval_internal_f<States_>;
@@ -613,11 +614,11 @@ namespace tah
 			static constexpr bool is_success = internal_type_::is_success;
 
 			using states_type = typename internal_type_::states_type;
-			using output_type = void;
+			using output_type = Output_;
 			using input_type = Input_;
 		};
-		template<char32_t Jongsung_, typename States_, typename Input_>
-		struct aheui_eval<U'ㅎ', Jongsung_, States_, Input_>
+		template<char32_t Jongsung_, typename States_, typename Input_, typename Output_>
+		struct aheui_eval<U'ㅎ', Jongsung_, States_, Input_, Output_>
 		{
 		private:
 			using internal_type_ = aheui_eval_internal_g<States_>;
@@ -626,11 +627,11 @@ namespace tah
 			static constexpr bool is_success = internal_type_::is_success;
 
 			using states_type = typename internal_type_::states_type;
-			using output_type = void;
+			using output_type = Output_;
 			using input_type = Input_;
 		};
-		template<char32_t Jongsung_, typename States_, typename Input_>
-		struct aheui_eval<U'ㅂ', Jongsung_, States_, Input_,
+		template<char32_t Jongsung_, typename States_, typename Input_, typename Output_>
+		struct aheui_eval<U'ㅂ', Jongsung_, States_, Input_, Output_,
 			typename std::enable_if<Jongsung_ == U'ㅇ'>::type>
 		{
 		private:
@@ -640,11 +641,11 @@ namespace tah
 			static constexpr bool is_success = internal_type_::is_success;
 			
 			using states_type = typename internal_type_::states_type;
-			using output_type = void;
+			using output_type = Output_;
 			using input_type = typename internal_type_::input_type;
 		};
-		template<char32_t Jongsung_, typename States_, typename Input_>
-		struct aheui_eval<U'ㅂ', Jongsung_, States_, Input_,
+		template<char32_t Jongsung_, typename States_, typename Input_, typename Output_>
+		struct aheui_eval<U'ㅂ', Jongsung_, States_, Input_, Output_,
 			typename std::enable_if<Jongsung_ == U'ㅎ'>::type>
 		{
 		private:
@@ -654,11 +655,11 @@ namespace tah
 			static constexpr bool is_success = internal_type_::is_success;
 
 			using states_type = typename internal_type_::states_type;
-			using output_type = void;
+			using output_type = Output_;
 			using input_type = typename internal_type_::input_type;
 		};
-		template<char32_t Jongsung_, typename States_, typename Input_>
-		struct aheui_eval<U'ㅂ', Jongsung_, States_, Input_,
+		template<char32_t Jongsung_, typename States_, typename Input_, typename Output_>
+		struct aheui_eval<U'ㅂ', Jongsung_, States_, Input_, Output_,
 			typename std::enable_if<Jongsung_ != U'ㅇ' && Jongsung_ != U'ㅎ'>::type>
 		{
 		private:
@@ -668,11 +669,11 @@ namespace tah
 			static constexpr bool is_success = internal_type_::is_success;
 
 			using states_type = typename internal_type_::states_type;
-			using output_type = void;
+			using output_type = Output_;
 			using input_type = Input_;
 		};
-		template<char32_t Jongsung_, typename States_, typename Input_>
-		struct aheui_eval<U'ㅁ', Jongsung_, States_, Input_,
+		template<char32_t Jongsung_, typename States_, typename Input_, typename Output_>
+		struct aheui_eval<U'ㅁ', Jongsung_, States_, Input_, Output_,
 			typename std::enable_if<Jongsung_ == U'ㅇ'>::type>
 		{
 		private:
@@ -682,11 +683,12 @@ namespace tah
 			static constexpr bool is_success = internal_type_::is_success;
 
 			using states_type = typename internal_type_::states_type;
-			using output_type = typename internal_type_::output_type;
+			using output_type =
+				typename add_raw_string<Output_, typename internal_type_::output_type>::type;
 			using input_type = Input_;
 		};
-		template<char32_t Jongsung_, typename States_, typename Input_>
-		struct aheui_eval<U'ㅁ', Jongsung_, States_, Input_,
+		template<char32_t Jongsung_, typename States_, typename Input_, typename Output_>
+		struct aheui_eval<U'ㅁ', Jongsung_, States_, Input_, Output_,
 			typename std::enable_if<Jongsung_ == U'ㅎ'>::type>
 		{
 		private:
@@ -696,11 +698,12 @@ namespace tah
 			static constexpr bool is_success = internal_type_::is_success;
 
 			using states_type = typename internal_type_::states_type;
-			using output_type = typename internal_type_::output_type;
+			using output_type =
+				typename add_raw_string<Output_, typename internal_type_::output_type>::type;
 			using input_type = Input_;
 		};
-		template<char32_t Jongsung_, typename States_, typename Input_>
-		struct aheui_eval<U'ㅁ', Jongsung_, States_, Input_,
+		template<char32_t Jongsung_, typename States_, typename Input_, typename Output_>
+		struct aheui_eval<U'ㅁ', Jongsung_, States_, Input_, Output_,
 			typename std::enable_if<Jongsung_ != U'ㅇ' && Jongsung_ != U'ㅎ'>::type>
 		{
 		private:
@@ -710,18 +713,18 @@ namespace tah
 			static constexpr bool is_success = internal_type_::is_success;
 
 			using states_type = typename internal_type_::states_type;
-			using output_type = void;
+			using output_type = Output_;
 			using input_type = Input_;
 		};
 
 		template<typename Lines_, typename Input_, typename Output_, typename States_, typename = void>
 		struct aheui_run_internal;
 
-		template<typename Lines_, typename Input_, typename Eval_, typename = void>
+		template<typename Lines_, typename Eval_, typename = void>
 		struct aheui_run_internal_internal;
 
-		template<typename Lines_, typename Input_, typename Eval_>
-		struct aheui_run_internal_internal<Lines_, Input_, Eval_,
+		template<typename Lines_, typename Eval_>
+		struct aheui_run_internal_internal<Lines_, Eval_,
 			typename std::enable_if<!Eval_::states_type::is_exited>::type>
 		{
 		private:
@@ -730,27 +733,25 @@ namespace tah
 
 		public:
 			using next = typename aheui_run_internal<
-				Lines_, Input_, aheui_states<
+				Lines_, typename Eval_::input_type, typename Eval_::output_type, aheui_states<
 					typename Eval_::states_type::storages, moved_cursor_,
 					Eval_::states_type::selected_storage, Eval_::states_type::is_exited,
 					typename Eval_::states_type::result
-				>, typename Eval_::output_type>::internal_::next;
+				>>::internal_::next;
 		};
-		template<typename Lines_, typename Input_, typename Eval_>
-		struct aheui_run_internal_internal<Lines_, Input_, Eval_,
+		template<typename Lines_, typename Eval_>
+		struct aheui_run_internal_internal<Lines_, Eval_,
 			typename std::enable_if<Eval_::states_type::is_exited>::type>
 		{
 			using next = Eval_;
 		};
 
-		template<typename Lines_, typename Input_, typename States_, typename Output_>
-		struct aheui_run_internal<Lines_, Input_, States_, Output_,
+		template<typename Lines_, typename Input_, typename Output_, typename States_>
+		struct aheui_run_internal<Lines_, Input_, Output_, States_,
 			typename std::enable_if<hangul::is_hangul<get_command<Lines_, typename States_::cursor>::value>>::type>
 		{
-			template<typename Lines_, typename Input_, typename Eval_, typename>
+			template<typename Lines_, typename Eval_, typename>
 			friend struct aheui_run_internal_internal;
-			template<typename Eval_, typename PrevEval_>
-			friend struct get_last_eval;
 
 		private:
 			static constexpr char32_t command_ = get_command<Lines_, typename States_::cursor>::value;
@@ -760,13 +761,15 @@ namespace tah
 			using new_cursor_ = typename compute_direction<jungsung_, typename States_::cursor>::type;
 			using eval_ = aheui_eval<chosung_, jongsung_,
 				aheui_states<typename States_::storages, new_cursor_, States_::selected_storage, States_::is_exited,
-				typename States_::result>, Input_>;
-			using internal_ = aheui_run_internal_internal<Lines_, typename eval_::input_type, eval_>;
+				typename States_::result>, Input_, Output_>;
+			using internal_ = aheui_run_internal_internal<Lines_, eval_>;
 
 		public:
 			using states = typename internal_::next::states_type;
-			using output = typename add_raw_string<Output_, typename internal_::next::output_type>::type;
+			using output = typename internal_::next::output_type;
 			using result = typename states::result;
+
+			using input_type = typename internal_::next::input_type;
 		};
 
 		template<typename Lines_, typename Input_, typename States_>
@@ -778,7 +781,7 @@ namespace tah
 
 			template<typename String_>
 			using input = aheui_run<Lines_, typename add_raw_string<Input_, typename make_raw_string<String_>::type>::type, States_>;
-			using eval = aheui_run_internal<Lines_, Input_, States_, void>;
+			using eval = aheui_run_internal<Lines_, Input_, void, States_>;
 		};
 		template<typename Lines_, typename States_>
 		struct aheui_run<Lines_, void, States_>
@@ -788,7 +791,7 @@ namespace tah
 
 			template<typename String_>
 			using input = aheui_run<Lines_, typename make_raw_string<String_>::type, States_>;
-			using eval = aheui_run_internal<Lines_, void, States_, void>;
+			using eval = aheui_run_internal<Lines_, void, void, States_>;
 		};
 	}
 
