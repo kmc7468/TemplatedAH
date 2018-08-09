@@ -428,6 +428,8 @@ namespace tah
 			using output_type = void;
 		};
 
+
+
 		template<char32_t Jongsung_, typename States_>
 		struct aheui_eval<U'ㄷ', Jongsung_, States_>
 		{

@@ -423,6 +423,25 @@ struct name											\
 
 			using input_type = typename read_digits_::input_type;
 		};
+		template<typename Input_>
+		struct to_number<Input_, typename std::enable_if<
+			!is_digit<Input_::value[0]>::value && Input_::value[0] != U'-'>::type>
+		{
+#ifdef TEMPLATEDAH_INVFMT_PASS
+			static constexpr int_type value = -1;
+#endif
+
+			using input_type = Input_;
+		};
+		template<>
+		struct to_number<void>
+		{
+#ifndef TEMPLATEDAH_EOF_ERROR
+			static constexpr int_type value = -1;
+#endif
+
+			using input_type = void;
+		};
 	}
 }
 
