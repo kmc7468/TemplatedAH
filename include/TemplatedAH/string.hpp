@@ -460,6 +460,10 @@ struct name											\
 			using input_type = void;
 		};
 	}
+
+	using details::int_type;
+	template<typename String_>
+	using get_string_length = details::get_raw_string_length<String_>;
 }
 
 #endif

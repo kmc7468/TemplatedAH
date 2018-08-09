@@ -795,8 +795,6 @@ namespace tah
 		};
 	}
 
-	using details::int_type;
-
 	template<typename Code_>
 	using aheui_eval = details::aheui_run<
 		typename details::split_raw_string<typename details::make_raw_string<Code_>::type>::type,
