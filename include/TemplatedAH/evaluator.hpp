@@ -716,6 +716,17 @@ namespace tah
 			using output_type = Output_;
 			using input_type = Input_;
 		};
+		template<char32_t Jongsung_, typename States_, typename Input_, typename Output_>
+		struct aheui_eval<U'ㅇ', Jongsung_, States_, Input_, Output_>
+		{
+			static constexpr bool is_success = true;
+
+			using states_type = aheui_states<typename States_::storages,
+				typename move_cursor<typename States_::cursor>::type, States_::selected_storage, States_::is_exited,
+				typename States_::result>;
+			using output_type = Output_;
+			using input_type = Input_;
+		};
 
 		template<typename Lines_, typename Input_, typename Output_, typename States_, typename = void>
 		struct aheui_run_internal;
