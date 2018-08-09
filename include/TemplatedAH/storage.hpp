@@ -9,8 +9,6 @@ namespace tah
 {
 	namespace details
 	{
-		using int_type = long long;
-
 		template<std::size_t Index_, int_type First_, int_type... Data_>
 		struct get_value_by_index
 		{

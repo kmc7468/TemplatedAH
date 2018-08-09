@@ -16,6 +16,8 @@ struct name											\
 
 	namespace details
 	{
+		using int_type = long long;
+
 		template<std::size_t Index_, typename First_, typename... Data_>
 		struct get_type_by_index
 		{
@@ -32,6 +34,11 @@ struct name											\
 		{
 			static constexpr char32_t value[] = { String_... };
 			static constexpr std::size_t length = sizeof(value) / sizeof(char32_t);
+		};
+		template<>
+		struct line<>
+		{
+			static constexpr std::size_t length = 0;
 		};
 		template<typename... Lines_>
 		struct lines
@@ -108,14 +115,55 @@ struct name											\
 			using type = raw_string<String_[Index_ + 1]...>;
 		};
 
+		template<typename String_, std::size_t Length_, typename = void>
+		struct remove_raw_string_prefix;
+
 		template<typename String_, std::size_t Length_>
-		struct remove_raw_string_prefix
+		struct remove_raw_string_prefix<String_, Length_,
+			typename std::enable_if<String_::length != 1>::type>
 		{
 			using type = typename remove_raw_string_prefix_internal<String_::length, String_::value,
 				std::make_index_sequence<String_::length - Length_>>::type;
 		};
+		template<typename String_, std::size_t Length_>
+		struct remove_raw_string_prefix<String_, Length_,
+			typename std::enable_if<String_::length == 1>::type>
+		{
+			using type = void;
+		};
 		template<std::size_t Length_>
 		struct remove_raw_string_prefix<void, Length_>
+		{
+			using type = void;
+		};
+
+		template<std::size_t N_, const char32_t(&String_)[N_], typename>
+		struct remove_raw_string_postfix_internal;
+
+		template<std::size_t N_, const char32_t(&String_)[N_], std::size_t... Index_>
+		struct remove_raw_string_postfix_internal<N_, String_, std::index_sequence<Index_...>>
+		{
+			using type = raw_string<String_[Index_]...>;
+		};
+
+		template<typename String_, std::size_t Length_, typename = void>
+		struct remove_raw_string_postfix;
+
+		template<typename String_, std::size_t Length_>
+		struct remove_raw_string_postfix<String_, Length_,
+			typename std::enable_if<String_::length != 1>::type>
+		{
+			using type = typename remove_raw_string_postfix_internal<String_::length, String_::value,
+				std::make_index_sequence<String_::length - Length_>>::type;
+		};
+		template<typename String_, std::size_t Length_>
+		struct remove_raw_string_postfix<String_, Length_,
+			typename std::enable_if<String_::length == 1>::type>
+		{
+			using type = void;
+		};
+		template<std::size_t Length_>
+		struct remove_raw_string_postfix<void, Length_>
 		{
 			using type = void;
 		};
@@ -171,6 +219,12 @@ struct name											\
 			};
 			template<char32_t Character_>
 			static constexpr bool is_hangul = Character_ >= 0xAC00 && Character_ <= 0xD7A3;
+			
+			static constexpr int_type numbers[] =
+			{
+				0, 2, 4, 4, 2, 5, 5, 3, 5, 7, 9, 9, 7, 9,
+				9, 8, 4, 4, 6, 2, 4, -1, 3, 4, 3, 4, 4, -1
+			};
 		};
 
 		template<char32_t Hangul_, typename = void>
@@ -203,6 +257,171 @@ struct name											\
 		struct get_jongsung_index<Jongsung_, sizeof(hangul::jongsungs) / sizeof(char32_t)>
 		{
 			static constexpr std::size_t value = static_cast<std::size_t>(-1);
+		};
+
+		template<char32_t Character_>
+		struct is_space
+		{
+			static constexpr bool value =
+				Character_ == U' ' || Character_ == U'\f' || Character_ == U'\n' ||
+				Character_ == U'\r' || Character_ == U'\t' || Character_ == U'\v';
+		};
+		template<char32_t Digit_>
+		struct is_digit
+		{
+			static constexpr bool value = Digit_ >= U'0' && Digit_ <= U'9';
+		};
+
+		template<int_type Digit_>
+		struct digit_to_character
+		{
+			static constexpr char32_t value = U'0' + Digit_;
+		};
+		template<char32_t Character_>
+		struct make_raw_string_character
+		{
+			using type = raw_string<Character_>;
+		};
+
+		template<int_type Number_, typename String_ = void, typename = void>
+		struct to_string_number;
+
+		template<int_type Number_, typename String_>
+		struct to_string_number<Number_, String_, typename std::enable_if<Number_ <= 9 && Number_ >= 1>::type>
+		{
+			using type =
+				typename add_raw_string<
+					typename make_raw_string_character<digit_to_character<Number_>::value>::type,
+					String_>::type;
+		};
+		template<int_type Number_, typename String_>
+		struct to_string_number<Number_, String_, typename std::enable_if<(Number_ > 9)>::type>
+		{
+		private:
+			static constexpr int_type digit_ = Number_ - ((Number_ / 10) * 10);
+			using digit_type_ = typename make_raw_string_character<digit_to_character<digit_>::value>::type;
+
+		public:
+			using type = typename add_raw_string<
+					typename add_raw_string<
+						typename to_string_number<Number_ / 10>::type,
+						digit_type_>::type,
+				String_>::type;
+		};
+
+		template<char32_t Digit_>
+		struct character_to_digit
+		{
+			static constexpr int_type value = static_cast<int_type>(Digit_ - U'0');
+		};
+		template<int_type Base_, int_type Exp_>
+		struct pow
+		{
+			static constexpr int_type value = Base_ * pow<Base_, Exp_ - 1>::value;
+		};
+		template<int_type Base_>
+		struct pow<Base_, 0>
+		{
+			static constexpr int_type value = 1;
+		};
+
+		template<typename String_>
+		struct get_raw_string_length
+		{
+			static constexpr std::size_t value = String_::length;
+		};
+		template<>
+		struct get_raw_string_length<void>
+		{
+			static constexpr std::size_t value = 0;
+		};
+
+		template<typename Input_, typename String_, typename = void>
+		struct read_digits;
+
+		template<typename Input_, typename String_>
+		struct read_digits<Input_, String_, typename std::enable_if<
+				get_raw_string_length<Input_>::value != 0 &&
+				is_digit<Input_::value[0]>::value
+			>::type>
+		{
+		private:
+			using internal_input_type_ = typename remove_raw_string_prefix<Input_, 1>::type;
+			using next_ = typename read_digits<internal_input_type_, raw_string<Input_::value[0]>>;
+
+		public:
+			using input_type = typename next_::input_type;
+			using string_type = typename add_raw_string<String_, typename next_::string_type>::type;
+		};
+		template<typename Input_, typename String_>
+		struct read_digits<Input_, String_, typename std::enable_if<
+				get_raw_string_length<Input_>::value != 0 &&
+				!is_digit<Input_::value[0]>::value &&
+				!is_space<Input_::value[0]>::value
+			>::type>
+		{
+			using input_type = Input_;
+			using string_type = String_;
+		};
+		template<typename Input_, typename String_>
+		struct read_digits<Input_, String_, typename std::enable_if<
+				get_raw_string_length<Input_>::value != 0 &&
+				!is_digit<Input_::value[0]>::value &&
+				is_space<Input_::value[0]>::value
+			>::type>
+		{
+			using input_type = typename remove_raw_string_prefix<Input_, 1>::type;
+			using string_type = String_;
+		};
+		template<typename Input_, typename String_>
+		struct read_digits<Input_, String_, typename std::enable_if<
+				get_raw_string_length<Input_>::value == 0
+			>::type>
+		{
+			using input_type = void;
+			using string_type = String_;
+		};
+
+		template<typename String_, std::size_t Index_>
+		struct to_number_from_digits
+		{
+			static constexpr int_type value =
+				character_to_digit<String_::value[String_::length - 1]>::value *
+				pow<10, Index_>::value +
+				to_number_from_digits<typename remove_raw_string_postfix<String_, 1>::type,
+									  Index_ + 1>::value;
+		};
+		template<std::size_t Index_>
+		struct to_number_from_digits<void, Index_>
+		{
+			static constexpr int_type value = 0;
+		};
+
+		template<typename Input_, typename = void>
+		struct to_number;
+
+		template<typename Input_>
+		struct to_number<Input_, typename std::enable_if<is_digit<Input_::value[0]>::value>::type>
+		{
+		private:
+			using read_digits_ = typename read_digits<Input_, void>;
+
+		public:
+			static constexpr int_type value = to_number_from_digits<read_digits_::string_type, 0>::value;
+
+			using input_type = typename read_digits_::input_type;
+		};
+		template<typename Input_>
+		struct to_number<Input_, typename std::enable_if<Input_::value[0] == U'-'>::type>
+		{
+		private:
+			using read_digits_ = typename read_digits<
+				typename remove_raw_string_prefix<Input_, 1>::type, void>;
+
+		public:
+			static constexpr int_type value = -to_number_from_digits<read_digits_::string_type, 0>::value;
+
+			using input_type = typename read_digits_::input_type;
 		};
 	}
 }
