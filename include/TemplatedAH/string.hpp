@@ -99,6 +99,27 @@ struct name											\
 			using type = void;
 		};
 
+		template<std::size_t N_, const char32_t(&String_)[N_], typename>
+		struct remove_raw_string_prefix_internal;
+
+		template<std::size_t N_, const char32_t(&String_)[N_], std::size_t... Index_>
+		struct remove_raw_string_prefix_internal<N_, String_, std::index_sequence<Index_...>>
+		{
+			using type = raw_string<String_[Index_ + 1]...>;
+		};
+
+		template<typename String_, std::size_t Length_>
+		struct remove_raw_string_prefix
+		{
+			using type = typename remove_raw_string_prefix_internal<String_::length, String_::value,
+				std::make_index_sequence<String_::length - Length_>>::type;
+		};
+		template<std::size_t Length_>
+		struct remove_raw_string_prefix<void, Length_>
+		{
+			using type = void;
+		};
+
 		template<typename String_, bool NewLine_, std::size_t Index_, std::size_t Length_, char32_t Character_, char32_t... String2_>
 		struct split_raw_string_internal
 		{
