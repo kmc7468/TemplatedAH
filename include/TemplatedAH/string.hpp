@@ -11,8 +11,28 @@ namespace tah
 struct name											\
 {													\
 	static constexpr const char32_t str[] = string;	\
+	static constexpr std::size_t str_length =		\
+		sizeof(str) / sizeof(char32_t);				\
+	using str_type = char32_t;						\
 };
-
+#define TEMPLATEDAH_STRING8(name, string)			\
+struct name											\
+{													\
+	static constexpr const char str[] = string;		\
+	static constexpr std::size_t str_length =		\
+		sizeof(str);								\
+	using str_type = char;							\
+};
+#define TEMPLATEDAH_STRING16(name, string)			\
+struct name											\
+{													\
+	static constexpr const char16_t str[] = string;	\
+	static constexpr std::size_t str_length =		\
+		sizeof(str) / sizeof(char16_t);				\
+	using str_type = char16_t;						\
+};
+#define TEMPLATEDAH_STRING32(name, string)			\
+TEMPLATEDAH_STRING(name, string)
 
 	namespace details
 	{
@@ -29,17 +49,31 @@ struct name											\
 			using type = First_;
 		};
 
-		template<char32_t... String_>
-		struct line
+		template<typename Ty_, Ty_... String_>
+		struct basic_raw_string
 		{
-			static constexpr char32_t value[] = { String_... };
-			static constexpr std::size_t length = sizeof(value) / sizeof(char32_t);
+			static constexpr Ty_ value[] = { String_... };
+			static constexpr std::size_t length = sizeof...(String_);
+
+			using char_type = Ty_;
 		};
-		template<>
-		struct line<>
+		template<typename Ty_>
+		struct basic_raw_string<Ty_>
 		{
 			static constexpr std::size_t length = 0;
+
+			using char_type = Ty_;
 		};
+
+		template<char... String_>
+		using raw_string_utf8 = basic_raw_string<char, String_...>;
+		template<char16_t... String_>
+		using raw_string_utf16 = basic_raw_string<char16_t, String_...>;
+		template<char32_t... String_>
+		using raw_string_utf32 = basic_raw_string<char32_t, String_...>;
+
+		template<char32_t... String_>
+		using line = raw_string_utf32<String_...>;
 		template<typename... Lines_>
 		struct lines
 		{
@@ -51,43 +85,43 @@ struct name											\
 		template<char32_t... String_>
 		using raw_string = line<String_...>;
 
-		template<typename String_, std::size_t Index_, std::size_t Length_, char32_t... String2_>
+		template<typename String_, std::size_t Index_, std::size_t Length_, typename String_::str_type... String2_>
 		struct make_raw_string_internal
 		{
 			using type = typename make_raw_string_internal<String_, Index_ + 1, Length_, String2_..., String_::str[Index_]>::type;
 		};
-		template<typename String_, std::size_t Length_, char32_t... String2_>
+		template<typename String_, std::size_t Length_, typename String_::str_type... String2_>
 		struct make_raw_string_internal<String_, Length_, Length_, String2_...>
 		{
-			using type = raw_string<String2_...>;
+			using type = basic_raw_string<typename String_::str_type, String2_...>;
 		};
 
 		template<typename String_>
 		struct make_raw_string
 		{
-			using type = typename make_raw_string_internal<String_, 0, sizeof(String_::str) / sizeof(char32_t) - 1>::type;
+			using type = typename make_raw_string_internal<String_, 0, String_::str_length - 1>::type;
 		};
 
-		template<std::size_t N_, const char32_t(&String_)[N_], typename>
+		template<typename Ty_, std::size_t N_, const Ty_(&String_)[N_], typename>
 		struct add_raw_string_internal;
 		
-		template<std::size_t N_, const char32_t(&String_)[N_], std::size_t... Index_>
-		struct add_raw_string_internal<N_, String_, std::index_sequence<Index_...>>
+		template<typename Ty_, std::size_t N_, const Ty_(&String_)[N_], std::size_t... Index_>
+		struct add_raw_string_internal<Ty_, N_, String_, std::index_sequence<Index_...>>
 		{
-			template<std::size_t M_, const char32_t(&String2_)[M_], typename>
+			template<std::size_t M_, const Ty_(&String2_)[M_], typename>
 			struct add_raw_string_internal_internal;
 
-			template<std::size_t M_, const char32_t(&String2_)[M_], std::size_t... Index2_>
+			template<std::size_t M_, const Ty_(&String2_)[M_], std::size_t... Index2_>
 			struct add_raw_string_internal_internal<M_, String2_, std::index_sequence<Index2_...>>
 			{
-				using type = raw_string<String_[Index_]..., String2_[Index2_]...>;
+				using type = basic_raw_string<Ty_, String_[Index_]..., String2_[Index2_]...>;
 			};
 		};
 
 		template<typename String_, typename String2_>
 		struct add_raw_string
 		{
-			using type = typename add_raw_string_internal<String_::length, String_::value, std::make_index_sequence<String_::length>>::
+			using type = typename add_raw_string_internal<typename String_::char_type, String_::length, String_::value, std::make_index_sequence<String_::length>>::
 				template add_raw_string_internal_internal<String2_::length, String2_::value, std::make_index_sequence<String2_::length>>::type;
 		};
 		template<typename String2_>
@@ -508,4 +542,5 @@ struct name											\
 	using get_string_length = details::get_raw_string_length<String_>;
 }
 
+#include "encoding.hpp"
 #endif
