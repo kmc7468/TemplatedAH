@@ -1101,6 +1101,36 @@ namespace tah
 	using aheui_eval_raw = details::aheui_run<
 		typename details::split_raw_string<typename details::make_raw_string<Code_>::type>::type,
 		void, States_>;
+
+	template<typename Code_>
+	using aheui_eval_utf8 = details::aheui_run<
+		typename details::split_raw_string<typename details::utf8_to_utf32<
+			typename details::make_raw_string<Code_>::type>::type>::type,
+		void, details::create_states>;
+
+	template<typename Code_>
+	using aheui_eval_utf16 = details::aheui_run<
+		typename details::split_raw_string<typename details::utf16_to_utf32<
+		typename details::make_raw_string<Code_>::type>::type>::type,
+		void, details::create_states>;
+
+	template<typename Code_>
+	using aheui_eval_utf32 = aheui_eval<Code_>;
+
+	template<typename Code_, typename States_>
+	using aheui_eval_raw_utf8 = details::aheui_run<
+		typename details::split_raw_string<typename details::utf8_to_utf32<
+		typename details::make_raw_string<Code_>::type>::type>::type,
+		void, States_>;
+
+	template<typename Code_, typename States_>
+	using aheui_eval_raw_utf16 = details::aheui_run<
+		typename details::split_raw_string<typename details::utf16_to_utf32<
+		typename details::make_raw_string<Code_>::type>::type>::type,
+		void, States_>;
+
+	template<typename Code_, typename States_>
+	using aheui_eval_raw_utf32 = aheui_eval_raw<Code_, States_>;
 }
 
 #endif

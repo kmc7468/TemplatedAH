@@ -4,6 +4,15 @@
 #include <cstddef>
 #include <type_traits>
 
+#ifndef TEMPLATEDAH_NO_PRINT
+#	include <cstdio>
+
+#	if defined(WIN32) || defined(_WIN32) || defined(WIN64) || defined(_WIN64)
+#		include <fcntl.h>
+#		include <io.h>
+#	endif
+#endif
+
 namespace tah
 {
 	namespace details
@@ -239,6 +248,92 @@ namespace tah
 				typename utf16_to_utf32<String_>::type>::type;
 		};
 	}
+
+#ifndef TEMPLATEDAH_NO_PRINT
+	template<typename String_>
+	typename std::enable_if<
+		std::is_same<char32_t, typename String_::char_type>::value
+	>::type print(std::FILE* stream)
+	{
+		using string_type = String_;
+
+#if defined(WIN32) || defined(_WIN32) || defined(WIN64) || defined(_WIN64)
+		using utf16_string_type = typename details::utf32_to_utf16<string_type>::type;
+
+		_setmode(_fileno(stream), _O_U16TEXT);
+
+		for (std::size_t i = 0; i < utf16_string_type::length; ++i)
+		{
+			std::putwc(static_cast<wchar_t>(utf16_string_type::value[i]), stream);
+		}
+
+		_setmode(_fileno(stream), _O_TEXT);
+#else
+		using utf8_string_type = typename details::utf32_to_utf8<string_type>::type;
+
+		for (std::size_t i = 0; i < utf8_string_type::length; ++i)
+		{
+			std::putc(utf8_string_type::value[i], stream);
+		}
+#endif
+	}
+	template<typename String_>
+	typename std::enable_if<
+		std::is_same<char16_t, typename String_::char_type>::value
+	>::type print(std::FILE* stream)
+	{
+		using string_type = String_;
+
+#if defined(WIN32) || defined(_WIN32) || defined(WIN64) || defined(_WIN64)
+		_setmode(_fileno(stream), _O_U16TEXT);
+
+		for (std::size_t i = 0; i < string_type::length; ++i)
+		{
+			std::putwc(static_cast<wchar_t>(string_type::value[i]), stream);
+		}
+
+		_setmode(_fileno(stream), _O_TEXT);
+#else
+		using utf8_string_type = typename details::utf16_to_utf8<string_type>::type;
+
+		for (std::size_t i = 0; i < utf8_string_type::length; ++i)
+		{
+			std::putc(utf8_string_type::value[i], stream);
+		}
+#endif
+	}
+	template<typename String_>
+	typename std::enable_if<
+		std::is_same<char, typename String_::char_type>::value
+	>::type print(std::FILE* stream)
+	{
+		using string_type = String_;
+
+#if defined(WIN32) || defined(_WIN32) || defined(WIN64) || defined(_WIN64)
+		using utf16_string_type = typename details::utf8_to_utf16<string_type>::type;
+
+		_setmode(_fileno(stream), _O_U16TEXT);
+
+		for (std::size_t i = 0; i < utf16_string_type::length; ++i)
+		{
+			std::putwc(static_cast<wchar_t>(utf16_string_type::value[i]), stream);
+		}
+
+		_setmode(_fileno(stream), _O_TEXT);
+#else
+		for (std::size_t i = 0; i < string_type::length; ++i)
+		{
+			std::putc(utf8_string_type::value[i], stream);
+		}
+#endif
+	}
+
+	template<typename String_>
+	void print()
+	{
+		print<String_>(stdout);
+	}
+#endif
 }
 
 #endif
