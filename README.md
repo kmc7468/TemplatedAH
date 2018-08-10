@@ -64,6 +64,15 @@ TemplatedAH는 Header-only 라이브러리로, 추가적인 컴파일이 필요�
 정의되지 않았을 경우 이러한 케이스가 발생하면 컴파일 오류가 발생합니다.
 - `TEMPLATEDAH_INVJONG_PASS`: 종성이 필요하지 않은 명령에 종성이 존재해도 종성이 없는 것처럼 처리합니다.<br>
 정의되지 않았을 경우 이러한 케이스가 발생하면 컴파일 오류가 발생합니다.
+
+다음에 열거된 매크로는 TemplatedAH를 조금 더 편하게 사용할 수 있도록 해줍니다.
+- `TEMPLATEDAH_STRING8(name: identifier, string: string-literal)`: `name`이라는 이름을 가진 TemplatedAH에서 인식할 수 있는 멀티 바이트 문자열 구조체를 만듭니다. UTF-8을 사용할 것을 권장합니다.<br>
+사용 예: `TEMPLATEDAH_STRING8(test, u8"Hello, world!");`
+- `TEMPLATEDAH_STRING16(name: identifier, string: utf16-string-literal)`: `name`이라는 이름을 가진 TemplatedAH에서 인식할 수 있는 UTF-16 문자열 구조체를 만듭니다.<br>
+사용 예: `TEMPLATEDAH_STRING16(test, u"Hello, world!");`
+- `TEMPLATEDAH_STRING32(name: identifier, string: utf32-string-literal)`: `name`이라는 이름을 가진 TemplatedAH에서 인식할 수 있는 UTF-32 문자열 구조체를 만듭니다.<br>
+사용 예: `TEMPLATEDAH_STRING32(test, U"Hello, world!");`
+- `TEMPLATEDAH_STRING(name: identifier, string: utf32-string-literal)`: `TEMPLATEDAH_STRING32` 매크로와 같습니다.
 ## 아희
 아희는 최초의 난해한 한글 프로그래밍 언어입니다. [여기](http://aheui.github.io/introduction.ko)에서 아희의 소개, 표준, 예제 코드를 확인하실 수 있습니다.
 ### 통로의 구현
