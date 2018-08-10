@@ -31,6 +31,10 @@ namespace tah
 			using pop_type = stack<false, Data_...>;
 			template<int_type Value_>
 			using push_type = stack<false, Value_, Front_, Data_...>;
+
+			using copy_type = stack<false, Front_, Front_, Data_...>;
+			template<int_type Top_>
+			using swap_type = stack<false, Front_, Top_, Data_...>;
 		};
 		template<int_type Front_>
 		struct stack<false, Front_>
@@ -43,6 +47,10 @@ namespace tah
 			using pop_type = stack<true, -1>;
 			template<int_type Value_>
 			using push_type = stack<false, Value_, Front_>;
+
+			using copy_type = stack<false, Front_, Front_>;
+			template<int_type Top_>
+			using swap_type = stack<false, Front_, Top_>;
 		};
 		template<int_type Front_, int_type... Data_>
 		struct stack<true, Front_, Data_...>
@@ -71,6 +79,10 @@ namespace tah
 			using enqueue_type = queue<false, Front_, Data_..., Value_>;
 			template<int_type Value_>
 			using push_type = enqueue_type<Value_>;
+
+			using copy_type = queue<false, Front_, Front_, Data_...>;
+			template<int_type Top_>
+			using swap_type = queue<false, Front_, Top_, Data_...>;
 		};
 		template<int_type Front_>
 		struct queue<false, Front_>
@@ -86,6 +98,10 @@ namespace tah
 			using enqueue_type = queue<false, Front_, Value_>;
 			template<int_type Value_>
 			using push_type = enqueue_type<Value_>;
+
+			using copy_type = queue<false, Front_, Front_>;
+			template<int_type Top_>
+			using swap_type = queue<false, Front_, Top_>;
 		};
 		template<int_type Front_, int_type... Data_>
 		struct queue<true, Front_, Data_...>

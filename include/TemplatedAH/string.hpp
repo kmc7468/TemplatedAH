@@ -308,6 +308,13 @@ struct name											\
 						digit_type_>::type,
 				String_>::type;
 		};
+		template<int_type Number_, typename String_>
+		struct to_string_number<Number_, String_, typename std::enable_if<(Number_ < 0)>::type>
+		{
+		public:
+			using type = typename add_raw_string<raw_string<U'-'>,
+				typename to_string_number<-Number_, void>::type>::type;
+		};
 
 		template<char32_t Digit_>
 		struct character_to_digit

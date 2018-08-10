@@ -552,6 +552,60 @@ namespace tah
 				typename States_::result>;
 		};
 
+		template<typename States_, typename = void>
+		struct aheui_eval_internal_Q;
+		template<typename States_>
+		struct aheui_eval_internal_Q<States_,
+			typename std::enable_if<States_::storage::template assert_elements<1>>::type>
+		{
+		private:
+			using new_storage_ = typename States_::storage::copy_type;
+
+		public:
+			static constexpr bool is_success = true;
+
+			using states_type = aheui_states<typename States_::storages::template set_type<States_::selected_storage, new_storage_>,
+				typename move_cursor<typename States_::cursor>::type, States_::selected_storage, States_::is_exited,
+				typename States_::result>;
+		};
+		template<typename States_>
+		struct aheui_eval_internal_Q<States_,
+			typename std::enable_if<!States_::storage::template assert_elements<1>>::type>
+		{
+			static constexpr bool is_success = false;
+
+			using states_type = aheui_states<typename States_::storages,
+				typename move_cursor<typename States_::cursor::reversed_type>::type, States_::selected_storage, States_::is_exited,
+				typename States_::result>;
+		};
+		template<typename States_, typename = void>
+		struct aheui_eval_internal_v;
+		template<typename States_>
+		struct aheui_eval_internal_v<States_,
+			typename std::enable_if<States_::storage::template assert_elements<2>>::type>
+		{
+		private:
+			using new_storage_ =
+				typename States_::storage::pop_type::template swap_type<States_::storage::front>;
+
+		public:
+			static constexpr bool is_success = true;
+
+			using states_type = aheui_states<typename States_::storages::template set_type<States_::selected_storage, new_storage_>,
+				typename move_cursor<typename States_::cursor>::type, States_::selected_storage, States_::is_exited,
+				typename States_::result>;
+		};
+		template<typename States_>
+		struct aheui_eval_internal_v<States_,
+			typename std::enable_if<!States_::storage::template assert_elements<2>>::type>
+		{
+			static constexpr bool is_success = false;
+
+			using states_type = aheui_states<typename States_::storages,
+				typename move_cursor<typename States_::cursor::reversed_type>::type, States_::selected_storage, States_::is_exited,
+				typename States_::result>;
+		};
+
 		template<char32_t Jongsung_, typename States_, typename Input_, typename Output_>
 		struct aheui_eval<U'ㄷ', Jongsung_, States_, Input_, Output_>
 		{
@@ -724,6 +778,52 @@ namespace tah
 			using states_type = aheui_states<typename States_::storages,
 				typename move_cursor<typename States_::cursor>::type, States_::selected_storage, States_::is_exited,
 				typename States_::result>;
+			using output_type = Output_;
+			using input_type = Input_;
+		};
+		template<
+#ifdef TEMPLATEDAH_INVJONG_PASS
+			char32_t Jongsung_,
+#endif
+			typename States_, typename Input_, typename Output_>
+		struct aheui_eval<U'ㅃ',
+#ifdef TEMPLATEDAH_INVJONG_PASS
+			Jongsung_
+#else
+			0
+#endif
+			, States_, Input_, Output_>
+		{
+		private:
+			using internal_type_ = aheui_eval_internal_Q<States_>;
+
+		public:
+			static constexpr bool is_success = internal_type_::is_success;
+
+			using states_type = typename internal_type_::states_type;
+			using output_type = Output_;
+			using input_type = Input_;
+		};
+		template<
+#ifdef TEMPLATEDAH_INVJONG_PASS
+			char32_t Jongsung_,
+#endif
+			typename States_, typename Input_, typename Output_>
+		struct aheui_eval<U'ㅍ',
+#ifdef TEMPLATEDAH_INVJONG_PASS
+			Jongsung_
+#else
+			0
+#endif
+			, States_, Input_, Output_>
+		{
+		private:
+			using internal_type_ = aheui_eval_internal_v<States_>;
+
+		public:
+			static constexpr bool is_success = internal_type_::is_success;
+
+			using states_type = typename internal_type_::states_type;
 			using output_type = Output_;
 			using input_type = Input_;
 		};
