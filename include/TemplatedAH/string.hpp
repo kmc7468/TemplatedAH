@@ -194,10 +194,45 @@ struct name											\
 			using type = lines<line<String2_..., Character_>>;
 		};
 
+		/*
+		 * flatten_* 계열 템플릿 구조체들은
+		 * https://stackoverflow.com/questions/20253473/variadic-template-aliases-as-template-arguments
+		 * 에서 가져왔습니다.
+		 */
+
+		template<typename Ty_, typename Ty2_>
+		struct flatten_lines_internal;
+		template<typename... Arg_, typename... HeadArg_, typename... Tail_>
+		struct flatten_lines_internal<lines<Arg_...>, lines<lines<HeadArg_...>, Tail_...>>
+		{
+			using type = typename flatten_lines_internal<
+				lines<Arg_...>, lines<HeadArg_..., Tail_...>>::type;
+		};
+		template<typename... Arg_, typename Head_, typename... Tail_>
+		struct flatten_lines_internal<lines<Arg_...>, lines<Head_, Tail_...>>
+		{
+			using type = typename flatten_lines_internal<lines<Arg_..., Head_>, lines<Tail_...>>::type;
+		};
+		template<typename... Arg_>
+		struct flatten_lines_internal<lines<Arg_...>, lines<>>
+		{
+			using type = lines<Arg_...>;
+		};
+
+		template<typename Lines_>
+		struct flatten_lines;
+		template<typename... Arg_>
+		struct flatten_lines<lines<Arg_...>>
+		{
+			using type = typename flatten_lines_internal<lines<>, lines<Arg_...>>::type;
+		};
+
 		template<typename String_>
 		struct split_raw_string
 		{
-			using type = typename split_raw_string_internal<String_, false, 0, String_::length, 0>::type;
+			using type = typename flatten_lines<
+				typename split_raw_string_internal<String_, false, 0, String_::length, 0>::type
+			>::type;
 		};
 
 		struct hangul
