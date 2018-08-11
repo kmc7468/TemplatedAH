@@ -1066,6 +1066,10 @@ namespace tah
 			using output = typename internal_::next::output_type;
 			using result = typename states::result;
 
+			using output_utf8 = typename utf32_to_utf8<output>::type;
+			using output_utf16 = typename utf32_to_utf16<output>::type;
+			using output_utf32 = output;
+
 			using input_type = typename internal_::next::input_type;
 		};
 
@@ -1078,6 +1082,16 @@ namespace tah
 
 			template<typename String_>
 			using input = aheui_run<Lines_, typename add_raw_string<Input_, typename make_raw_string<String_>::type>::type, States_>;
+			template<typename String_>
+			using input_utf8 = aheui_run<Lines_, typename add_raw_string<Input_,
+				typename utf8_to_utf32<
+					typename make_raw_string<String_>::type>::type>::type, States_>;
+			template<typename String_>
+			using input_utf16 = aheui_run<Lines_, typename add_raw_string<Input_,
+				typename utf16_to_utf32<
+				typename make_raw_string<String_>::type>::type>::type, States_>;
+			template<typename String_>
+			using input_utf32 = input<String_>;
 			using eval = aheui_run_internal<Lines_, Input_, void, States_>;
 		};
 		template<typename Lines_, typename States_>
@@ -1088,6 +1102,14 @@ namespace tah
 
 			template<typename String_>
 			using input = aheui_run<Lines_, typename make_raw_string<String_>::type, States_>;
+			template<typename String_>
+			using input_utf8 = aheui_run<Lines_, typename utf8_to_utf32<
+				typename make_raw_string<String_>::type>::type, States_>;
+			template<typename String_>
+			using input_utf16 = aheui_run<Lines_, typename utf16_to_utf32<
+				typename make_raw_string<String_>::type>::type, States_>;
+			template<typename String_>
+			using input_utf32 = input<String_>;
 			using eval = aheui_run_internal<Lines_, void, void, States_>;
 		};
 	}

@@ -14,12 +14,12 @@ TEMPLATEDAH_STRING(input, U"A");
 int main()
 {
 	using eval = tah::aheui_eval<code>::input<input>::eval;
-
-	std::cout << tah::get_string_length<eval::output>::value << std::endl;
-	std::cout << (char)eval::output::value[0] << (char)eval::output::value[1] << std::endl;
+	tah::print<eval::output>();
 
 	return 0;
 }
+
+// 출력: 65
 ```
 ## 구현 진행 상황
 ### 명령의 구현
