@@ -1,4 +1,4 @@
-#ifndef TEMPLATEDAH_HEADER_DEBUGGER_HPP
+ï»¿#ifndef TEMPLATEDAH_HEADER_DEBUGGER_HPP
 #define TEMPLATEDAH_HEADER_DEBUGGER_HPP
 
 #include "string.hpp"
@@ -43,7 +43,7 @@ namespace tah
 		{
 			using type =
 				typename add_raw_string<
-					raw_string<U'¾Æ' + Index_, U':', U' '>,
+					raw_string<U'ì•„' + Index_, U':', U' '>,
 					typename add_raw_string<
 						typename add_raw_string<
 							typename dump_storage<typename Storages_::template get<hangul::jongsungs[Index_]>>::type,
@@ -58,7 +58,7 @@ namespace tah
 		{
 			using type =
 				typename add_raw_string<
-					raw_string<U'Û', U':', U' '>,
+					raw_string<U'ì•Ÿ', U':', U' '>,
 					typename add_raw_string<
 						typename dump_storage<typename Storages_::template get<hangul::jongsungs[Index_]>>::type,
 						typename dump_storages<Storages_, Index_ + 1>::type
