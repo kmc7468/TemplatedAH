@@ -356,7 +356,7 @@ TEMPLATEDAH_STRING(name, string)
 		struct to_string_number;
 
 		template<int_type Number_, typename String_>
-		struct to_string_number<Number_, String_, typename std::enable_if<Number_ <= 9 && Number_ >= 1>::type>
+		struct to_string_number<Number_, String_, typename std::enable_if<Number_ <= 9 && Number_ >= 0>::type>
 		{
 			using type =
 				typename add_raw_string<

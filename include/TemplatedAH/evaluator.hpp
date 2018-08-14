@@ -1,6 +1,7 @@
 ﻿#ifndef TEMPLATEDAH_HEADER_EVALUATOR_HPP
 #define TEMPLATEDAH_HEADER_EVALUATOR_HPP
 
+#include "debugger.hpp"
 #include "storage.hpp"
 #include "string.hpp"
 
