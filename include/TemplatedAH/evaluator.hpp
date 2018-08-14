@@ -634,6 +634,8 @@ namespace tah
 				typename States_::result>;
 
 		public:
+			static constexpr bool is_success = true;
+
 			using states_type = aheui_states<typename internal_states_type_::storages::template set_type<Jongsung_, new_storage_jong_>,
 				typename internal_states_type_::cursor, internal_states_type_::selected_storage, internal_states_type_::is_exited,
 				typename internal_states_type_::result>;
@@ -959,7 +961,7 @@ namespace tah
 		struct aheui_eval<U'ㅆ', Jongsung_, States_, Input_, Output_>
 		{
 		private:
-			using internal_type_ = aheui_eval_internal_t<States_, Jongsung_>;
+			using internal_type_ = aheui_eval_internal_T<States_, Jongsung_>;
 
 		public:
 			static constexpr bool is_success = internal_type_::is_success;
