@@ -658,7 +658,7 @@ namespace tah
 			static constexpr int_type rhs_ = States_::storage::front;
 			using lhs_type_ = typename States_::storage::pop_type;
 			static constexpr int_type lhs_ = lhs_type_::front;
-			using new_storage_ = typename lhs_type_::template push_type<lhs_ >= 1>;
+			using new_storage_ = typename lhs_type_::pop_type::template push_type<lhs_ >= 1>;
 
 		public:
 			static constexpr bool is_success = true;
@@ -1013,6 +1013,23 @@ namespace tah
 			using output_type = Output_;
 			using input_type = Input_;
 		};
+#ifdef TEMPLATEDAH_INVCHO_PASS
+		template<char32_t Chosung_, char32_t Jongsung_, typename States_,
+			typename Input_, typename Output_>
+		struct aheui_eval<Chosung_, Jongsung_, States_, Input_, Output_,
+			typename std::enable_if<Chosung_ == U'ㄱ' || Chosung_ == U'ㄲ' || Chosung_ == U'ㅉ' || Chosung_ == U'ㅋ'>::type>
+		{
+		public:
+			static constexpr bool is_success = true;
+
+			using states_type = aheui_states<
+					typename States_::storages, typename move_cursor<typename States_::cursor>::type,
+					States_::selected_storage, States_::is_exited, typename States_::result
+				>;
+			using output_type = Output_;
+			using input_type = Input_;
+		};
+#endif
 
 		template<typename Lines_, typename Input_, typename Output_, typename States_, typename = void>
 		struct aheui_run_internal;
@@ -1057,6 +1074,31 @@ namespace tah
 			static constexpr char32_t jongsung_ = divide_hangul<command_>::jongsung;
 			using new_cursor_ = typename compute_direction<jungsung_, typename States_::cursor>::type;
 			using eval_ = aheui_eval<chosung_, jongsung_,
+				aheui_states<typename States_::storages, new_cursor_, States_::selected_storage, States_::is_exited,
+				typename States_::result>, Input_, Output_>;
+			using internal_ = aheui_run_internal_internal<Lines_, eval_>;
+
+		public:
+			using states = typename internal_::next::states_type;
+			using output = typename internal_::next::output_type;
+			using result = typename states::result;
+
+			using output_utf8 = typename utf32_to_utf8<output>::type;
+			using output_utf16 = typename utf32_to_utf16<output>::type;
+			using output_utf32 = output;
+
+			using input_type = typename internal_::next::input_type;
+		};
+		template<typename Lines_, typename Input_, typename Output_, typename States_>
+		struct aheui_run_internal<Lines_, Input_, Output_, States_,
+			typename std::enable_if<!hangul::is_hangul<get_command<Lines_, typename States_::cursor>::value>>::type>
+		{
+			template<typename Lines_, typename Eval_, typename>
+			friend struct aheui_run_internal_internal;
+
+		private:
+			using new_cursor_ = typename States_::cursor;
+			using eval_ = aheui_eval<U'ㅇ', 0,
 				aheui_states<typename States_::storages, new_cursor_, States_::selected_storage, States_::is_exited,
 				typename States_::result>, Input_, Output_>;
 			using internal_ = aheui_run_internal_internal<Lines_, eval_>;

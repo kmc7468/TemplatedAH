@@ -22,7 +22,8 @@ namespace tah
 
 		template<typename String_, std::size_t Index_, typename Output_>
 		struct utf8_to_utf32<String_, Index_, Output_,
-			typename std::enable_if<static_cast<unsigned char>(String_::value[Index_]) < 0x80>::type>
+			typename std::enable_if<static_cast<unsigned char>(String_::value[Index_]) < 0x80 &&
+									Index_ < get_string_length<String_>::value>::type>
 		{
 			using type = typename add_raw_string<Output_,
 				typename add_raw_string<raw_string_utf32<static_cast<unsigned char>(String_::value[Index_])>,
@@ -34,7 +35,7 @@ namespace tah
 		struct utf8_to_utf32<String_, Index_, Output_,
 			typename std::enable_if<(static_cast<unsigned char>(String_::value[Index_]) & 0xF0) == 0xF0 &&
 									static_cast<unsigned char>(String_::value[Index_]) >= 0x80 &&
-									Index_ < String_::length>::type>
+									Index_ < get_string_length<String_>::value>::type>
 		{
 			using type = typename add_raw_string<Output_,
 				typename add_raw_string<
@@ -53,7 +54,7 @@ namespace tah
 			typename std::enable_if<(static_cast<unsigned char>(String_::value[Index_]) & 0xE0) == 0xE0 &&
 									!((static_cast<unsigned char>(String_::value[Index_]) & 0xF0) == 0xF0) &&
 									static_cast<unsigned char>(String_::value[Index_]) >= 0x80 &&
-									Index_ < String_::length>::type>
+									Index_ < get_string_length<String_>::value>::type>
 		{
 			using type = typename add_raw_string<Output_,
 				typename add_raw_string<
@@ -72,7 +73,7 @@ namespace tah
 									!((static_cast<unsigned char>(String_::value[Index_]) & 0xF0) == 0xF0) &&
 									!((static_cast<unsigned char>(String_::value[Index_]) & 0xE0) == 0xE0) &&
 									static_cast<unsigned char>(String_::value[Index_]) >= 0x80 &&
-									Index_ < String_::length>::type>
+									Index_ < get_string_length<String_>::value>::type>
 		{
 			using type = typename add_raw_string<Output_,
 				typename add_raw_string<
@@ -86,7 +87,7 @@ namespace tah
 		};
 		template<typename String_, std::size_t Index_, typename Output_>
 		struct utf8_to_utf32<String_, Index_, Output_,
-			typename std::enable_if<Index_ >= String_::length>::type>
+			typename std::enable_if<Index_ >= get_string_length<String_>::value>::type>
 		{
 			using type = Output_;
 		};
@@ -97,7 +98,7 @@ namespace tah
 		template<typename String_, std::size_t Index_, typename Output_>
 		struct utf32_to_utf8<String_, Index_, Output_,
 			typename std::enable_if<String_::value[Index_] < 0x80 &&
-									Index_ < String_::length>::type>
+									Index_ < get_string_length<String_>::value>::type>
 		{
 			using type = typename add_raw_string<Output_,
 				typename add_raw_string<raw_string_utf8<static_cast<char>(String_::value[Index_])>,
@@ -109,7 +110,7 @@ namespace tah
 		struct utf32_to_utf8<String_, Index_, Output_,
 			typename std::enable_if<String_::value[Index_] >= 0x80 &&
 									String_::value[Index_] < 0x800 &&
-									Index_ < String_::length>::type>
+									Index_ < get_string_length<String_>::value>::type>
 		{
 			using type = typename add_raw_string<Output_,
 				typename add_raw_string<
@@ -125,7 +126,7 @@ namespace tah
 		struct utf32_to_utf8<String_, Index_, Output_,
 			typename std::enable_if<String_::value[Index_] >= 0x800  &&
 									String_::value[Index_] < 0x10000 &&
-									Index_ < String_::length>::type>
+									Index_ < get_string_length<String_>::value>::type>
 		{
 			using type = typename add_raw_string<Output_,
 				typename add_raw_string<
@@ -142,7 +143,7 @@ namespace tah
 		struct utf32_to_utf8<String_, Index_, Output_,
 			typename std::enable_if<String_::value[Index_] >= 0x10000 &&
 									String_::value[Index_] < 0x110000 &&
-									Index_ < String_::length>::type>
+									Index_ < get_string_length<String_>::value>::type>
 		{
 			using type = typename add_raw_string<Output_,
 				typename add_raw_string<
@@ -158,7 +159,7 @@ namespace tah
 		};
 		template<typename String_, std::size_t Index_, typename Output_>
 		struct utf32_to_utf8<String_, Index_, Output_,
-			typename std::enable_if<Index_ >= String_::length>::type>
+			typename std::enable_if<Index_ >= get_string_length<String_>::value>::type>
 		{
 			using type = Output_;
 		};
@@ -169,7 +170,7 @@ namespace tah
 		template<typename String_, std::size_t Index_, typename Output_>
 		struct utf32_to_utf16<String_, Index_, Output_,
 			typename std::enable_if<String_::value[Index_] <= 0xFFFF &&
-									Index_ < String_::length>::type>
+									Index_ < get_string_length<String_>::value>::type>
 		{
 			using type = typename add_raw_string<Output_,
 				typename add_raw_string<raw_string_utf16<static_cast<char16_t>(String_::value[Index_])>,
@@ -180,7 +181,7 @@ namespace tah
 		template<typename String_, std::size_t Index_, typename Output_>
 		struct utf32_to_utf16<String_, Index_, Output_,
 			typename std::enable_if<(String_::value[Index_] > 0xFFFF) &&
-									Index_ < String_::length>::type>
+									Index_ < get_string_length<String_>::value>::type>
 		{
 			using type = typename add_raw_string<Output_,
 				typename add_raw_string<
@@ -194,7 +195,7 @@ namespace tah
 		};
 		template<typename String_, std::size_t Index_, typename Output_>
 		struct utf32_to_utf16<String_, Index_, Output_,
-			typename std::enable_if<Index_ >= String_::length>::type>
+			typename std::enable_if<Index_ >= get_string_length<String_>::value>::type>
 		{
 			using type = Output_;
 		};
@@ -205,7 +206,7 @@ namespace tah
 		template<typename String_, std::size_t Index_, typename Output_>
 		struct utf16_to_utf32<String_, Index_, Output_,
 			typename std::enable_if<String_::value[Index_] >= 0xD800 && String_::value[Index_] <= 0xDBFF &&
-									Index_ < String_::length>::type>
+									Index_ < get_string_length<String_>::value>::type>
 		{
 			using type = typename add_raw_string<Output_,
 				typename add_raw_string<
@@ -220,7 +221,7 @@ namespace tah
 		template<typename String_, std::size_t Index_, typename Output_>
 		struct utf16_to_utf32<String_, Index_, Output_,
 			typename std::enable_if<!(String_::value[Index_] >= 0xD800 && String_::value[Index_] <= 0xDBFF) &&
-									Index_ < String_::length>::type>
+									Index_ < get_string_length<String_>::value>::type>
 		{
 			using type = typename add_raw_string<Output_,
 				typename add_raw_string<raw_string_utf32<String_::value[Index_]>,
@@ -230,7 +231,7 @@ namespace tah
 		};
 		template<typename String_, std::size_t Index_, typename Output_>
 		struct utf16_to_utf32<String_, Index_, Output_,
-			typename std::enable_if<Index_ >= String_::length>::type>
+			typename std::enable_if<Index_ >= get_string_length<String_>::value>::type>
 		{
 			using type = Output_;
 		};
@@ -250,6 +251,11 @@ namespace tah
 	}
 
 #ifndef TEMPLATEDAH_NO_PRINT
+	template<typename String_>
+	typename std::enable_if<
+		std::is_same<void, String_>::value
+	>::type print(std::FILE*)
+	{}
 	template<typename String_>
 	typename std::enable_if<
 		std::is_same<char32_t, typename String_::char_type>::value
@@ -333,6 +339,9 @@ namespace tah
 	{
 		print<String_>(stdout);
 	}
+	template<>
+	void print<void>()
+	{}
 #endif
 }
 
