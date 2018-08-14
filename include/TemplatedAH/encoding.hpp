@@ -342,6 +342,42 @@ namespace tah
 	template<>
 	void print<void>()
 	{}
+
+	template<typename String_>
+	void print_org(std::FILE* stream)
+	{
+		std::fwrite(String_::value, sizeof(typename String_::char_type), String_::length, stream);
+	}
+	template<typename String_>
+	typename std::enable_if<
+		std::is_same<char32_t, typename String_::char_type>::value
+	>::type print_org_with_bom(std::FILE* stream)
+	{
+		char32_t bom = 0xFEFF;
+		std::fwrite(&bom, sizeof(char32_t), 1, stream);
+
+		print_org<String_>(stream);
+	}
+	template<typename String_>
+	typename std::enable_if<
+		std::is_same<char16_t, typename String_::char_type>::value
+	>::type print_org_with_bom(std::FILE* stream)
+	{
+		char16_t bom = 0xFEFF;
+		std::fwrite(&bom, sizeof(char16_t), 1, stream);
+
+		print_org<String_>(stream);
+	}
+	template<typename String_>
+	typename std::enable_if<
+		std::is_same<char, typename String_::char_type>::value
+	>::type print_org_with_bom(std::FILE* stream)
+	{
+		char bom[] = { 0xEF, 0xBB, 0xBF };
+		std::fwrite(bom, sizeof(char), sizeof(bom) / sizeof(char), stream);
+
+		print_org<String_>(stream);
+	}
 #endif
 }
 
