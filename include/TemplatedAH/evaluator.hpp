@@ -1067,7 +1067,7 @@ namespace tah
 		struct aheui_run_internal<Lines_, Input_, Output_, States_,
 			typename std::enable_if<hangul::is_hangul<get_command<Lines_, typename States_::cursor>::value>>::type>
 		{
-			template<typename Lines_, typename Eval_, typename>
+			template<typename Lines2_, typename Eval_, typename>
 			friend struct aheui_run_internal_internal;
 
 		private:
@@ -1096,7 +1096,7 @@ namespace tah
 		struct aheui_run_internal<Lines_, Input_, Output_, States_,
 			typename std::enable_if<!hangul::is_hangul<get_command<Lines_, typename States_::cursor>::value>>::type>
 		{
-			template<typename Lines_, typename Eval_, typename>
+			template<typename Lines2_, typename Eval_, typename>
 			friend struct aheui_run_internal_internal;
 
 		private:

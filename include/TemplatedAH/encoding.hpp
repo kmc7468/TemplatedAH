@@ -6,6 +6,7 @@
 
 #ifndef TEMPLATEDAH_NO_PRINT
 #	include <cstdio>
+#	include <cwchar>
 
 #	if defined(WIN32) || defined(_WIN32) || defined(WIN64) || defined(_WIN64)
 #		include <fcntl.h>

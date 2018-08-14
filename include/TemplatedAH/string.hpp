@@ -423,7 +423,7 @@ TEMPLATEDAH_STRING(name, string)
 		{
 		private:
 			using internal_input_type_ = typename remove_raw_string_prefix<Input_, 1>::type;
-			using next_ = typename read_digits<internal_input_type_, raw_string<Input_::value[0]>>;
+			using next_ = read_digits<internal_input_type_, raw_string<Input_::value[0]>>;
 
 		public:
 			using input_type = typename next_::input_type;
@@ -480,10 +480,10 @@ TEMPLATEDAH_STRING(name, string)
 		struct to_number<Input_, typename std::enable_if<is_digit<Input_::value[0]>::value>::type>
 		{
 		private:
-			using read_digits_ = typename read_digits<Input_, void>;
+			using read_digits_ = read_digits<Input_, void>;
 
 		public:
-			static constexpr int_type value = to_number_from_digits<read_digits_::string_type, 0>::value;
+			static constexpr int_type value = to_number_from_digits<typename read_digits_::string_type, 0>::value;
 
 			using input_type = typename read_digits_::input_type;
 		};
@@ -491,11 +491,11 @@ TEMPLATEDAH_STRING(name, string)
 		struct to_number<Input_, typename std::enable_if<Input_::value[0] == U'-'>::type>
 		{
 		private:
-			using read_digits_ = typename read_digits<
+			using read_digits_ = read_digits<
 				typename remove_raw_string_prefix<Input_, 1>::type, void>;
 
 		public:
-			static constexpr int_type value = -to_number_from_digits<read_digits_::string_type, 0>::value;
+			static constexpr int_type value = -to_number_from_digits<typename read_digits_::string_type, 0>::value;
 
 			using input_type = typename read_digits_::input_type;
 		};
