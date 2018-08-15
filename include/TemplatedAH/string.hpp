@@ -80,7 +80,7 @@ TEMPLATEDAH_STRING(name, string)
 		template<typename... Lines_>
 		struct lines
 		{
-			template<int Index_>
+			template<std::size_t Index_ >
 			using get = typename get_type_by_index<Index_, Lines_...>::type;
 			static constexpr std::size_t line = sizeof...(Lines_);
 		};
