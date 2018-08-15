@@ -330,7 +330,7 @@ namespace tah
 #else
 		for (std::size_t i = 0; i < string_type::length; ++i)
 		{
-			std::putc(utf8_string_type::value[i], stream);
+			std::putc(string_type::value[i], stream);
 		}
 #endif
 	}
