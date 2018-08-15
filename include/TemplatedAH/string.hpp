@@ -65,6 +65,9 @@ TEMPLATEDAH_STRING(name, string)
 			using char_type = Ty_;
 		};
 
+		template<typename Ty_, Ty_... String_>
+		constexpr Ty_ basic_raw_string<Ty_, String_...>::value[];
+
 		template<char... String_>
 		using raw_string_utf8 = basic_raw_string<char, String_...>;
 		template<char16_t... String_>
